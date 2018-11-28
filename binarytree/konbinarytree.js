@@ -83,6 +83,8 @@ class BinaryTree {
           currentNode.rightChild = rightChildMinNode.rightChild
         }
       } else if (currentNode.leftChild && !currentNode.rightChild) {
+        // if currentNode only has left child, replace the parent node's link with it
+        // have to check if the deleted/currentNode is the left child or right child of parent
         if (parentNode.leftChild && parentNode.leftChild.value === currentNode.value) {
           parentNode.leftChild = currentNode.leftChild
         } else {
