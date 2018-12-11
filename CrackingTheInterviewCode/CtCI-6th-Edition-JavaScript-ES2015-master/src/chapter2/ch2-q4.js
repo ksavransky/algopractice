@@ -21,16 +21,13 @@ export function partition(list, val) {
     if (node.val >= val) {
       if (!largerTail) {
         largerHead = largerTail = node;
-      }
-      else {
+      } else {
         largerTail = largerTail.next = node;
       }
-    }
-    else if (node.val < val) {
+    } else if (node.val < val) {
       if (!smallerHead) {
         smallerHead = smallerTail = node;
-      }
-      else {
+      } else {
         smallerTail = smallerTail.next = node;
       }
     }

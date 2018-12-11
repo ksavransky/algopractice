@@ -261,31 +261,120 @@ function deleteNodeInMiddle(node){
 // Input: 3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1
 // Output: 3 -> 1 -> 2 -> 10 -> 5 -> 5 -> 8
 
-// my thoughts: easier with double linked list. just go through list and move larger items to next of tail
-// with single linked list harder because no tail (unless create singly linked list with a tail -- which is a thing)
+// const n1 = new Node(1)
+// const n2 = new Node(2)
+// const n3 = new Node(3)
+// const n5a = new Node(5)
+// const n5b = new Node(5)
+// const n8 = new Node(8)
+// const n10 = new Node(10)
+//
+// const list = new SinglyLinkedList(n3)
+// list.insertNodeLast(n5a)
+// list.insertNodeLast(n8)
+// list.insertNodeLast(n5b)
+// list.insertNodeLast(n10)
+// list.insertNodeLast(n2)
+// list.insertNodeLast(n1)
 
-const n1 = new Node(1)
-const n2 = new Node(2)
-const n3 = new Node(3)
-const n4 = new Node(4)
-const n5 = new Node(5)
-const n6 = new Node(6)
-const n7 = new Node(7)
-const n9 = new Node(9)
-
-const list = new DoubleLinkedList(n4)
-list.insertNodeLast(n1)
-list.insertNodeLast(n9)
-list.insertNodeLast(n7)
-list.insertNodeLast(n3)
-list.insertNodeLast(n2)
-list.insertNodeLast(n5)
-
+// console.log(list)
 // console.log(list.printNodes())
 
-function partition(list, partitionValue){
-  if (!list.head) {
-    return null
+// This works but is ugly and give wrong order
+// function partition(list, partitionValue) {
+//   if (!list.head) {
+//     return null
+//   }
+//   const leftPartition = []
+//   const rightPartition = []
+//
+//   let currentNode = list.head
+//   for (let i = 0; i < list.length; i++) {
+//     if (currentNode.value >= partitionValue) {
+//       rightPartition.push(currentNode)
+//     } else {
+//       leftPartition.push(currentNode)
+//     }
+//     currentNode = currentNode.next
+//   }
+//
+//   leftPartition.forEach((node, index) => {
+//     if (index === 0) {
+//       node.prev = null
+//     } else {
+//       node.prev = leftPartition[index - 1]
+//     }
+//     if (index + 1 === leftPartition.length) {
+//       node.next = null
+//     } else {
+//       node.next = leftPartition[index + 1]
+//     }
+//   })
+//
+//   rightPartition.forEach((node, index) => {
+//     if (index === 0) {
+//       node.prev = null
+//     } else {
+//       node.prev = rightPartition[index - 1]
+//     }
+//     if (index + 1 === rightPartition.length) {
+//       node.next = null
+//     } else {
+//       node.next = rightPartition[index + 1]
+//     }
+//   })
+//
+//   if (leftPartition.length > 0 && rightPartition.length > 0) {
+//     leftPartition[leftPartition.length - 1].next = rightPartition[0]
+//     rightPartition[0].prev = leftPartition[leftPartition.length - 1]
+//   }
+//
+//   if (leftPartition.length > 0) {
+//     return leftPartition[0]
+//   } else {
+//     return rightPartition[0]
+//   }
+// }
+
+export function partition(list, val) {
+  let node = list,
+    smallerHead, smallerTail, largerHead, largerTail;
+
+  smallerHead = smallerTail = largerHead = largerTail = null;
+  while (node) {
+    let next = node.next;
+    node.next = null;
+    if (node.val >= val) {
+      if (!largerTail) {
+        largerHead = largerTail = node;
+      } else {
+        largerTail = largerTail.next = node;
+      }
+    } else if (node.val < val) {
+      if (!smallerHead) {
+        smallerHead = smallerTail = node;
+      } else {
+        smallerTail = smallerTail.next = node;
+      }
+    }
+    node = next;
   }
 
+  if (smallerTail) {
+    smallerTail.next = largerHead;
+  }
+  return smallerHead || largerHead;
 }
+
+// EXAMPLE: [partition=5]
+// Input: 3 -> 5 -> 8 -> 5 -> 10 -> 2 -> 1
+// Output: 3 -> 1 -> 2 -> 10 -> 5 -> 5 -> 8
+// console.log(partition(list, 5))
+
+//You have two numbers represented by a linked list, where each node contains a single digit.
+// The digits are stored in reverse order, such that the 1 's digit is at the head of the list.
+//  Write a function that adds the two numbers and returns the sum as a linked list.
+// Input: (7-> 1 -> 6) + (5 -> 9 -> 2). That is, 617 + 295.
+// Output: 2 -> 1 -> 9. That is, 912.
+
+function sumLists(list1, list2)
