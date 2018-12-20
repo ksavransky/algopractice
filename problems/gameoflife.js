@@ -187,6 +187,16 @@ var rescueCell = (row, col, board) => {
 // should become:
 // [[0, 1], [1, 2], [2, 0], [2, 1], [2, 2]]
 
+// Output (ie. next state):
+// [
+//   [0,0,0],
+//   [1,0,1],
+//   [0,1,1],
+//   [0,1,0]
+// ]
+// should become
+// [[1, 0], [1, 2], [2, 1], [2, 2], [3, 1]]
+
 function gameOfLifeBestSolution(board) {
   const boardAsLivingCellsOnly = []
   board.forEach((row, rowIndex) => {
@@ -196,17 +206,59 @@ function gameOfLifeBestSolution(board) {
       }
     })
   })
+  const nextLiveCells = []
+  const nowDeadButPotentiallyAliveCells = []
   boardAsLivingCellsOnly.forEach((livingCell) => {
-    const livingCellX = livingCell[0]
-    const livingCellY = livingCell[1]
-    const surroundingCells = [[livingCellX - 1 , livingCellY - 1], [livingCellX - 1, livingCellY], [livingCellX - 1, livingCellY + 1], [livingCellX, livingCellY - 1], [livingCellX, livingCellY + 1], [livingCellX + 1, livingCellY - 1], [livingCellX + 1, livingCellY], [livingCellX + 1, livingCellY + 1]]
-    liveNeighborCellCount = 0
-    surroundingCells.forEach((neighborCell) => {
-      if (boardAsLivingCellsOnly.find(neighborCell)) {
+    const liveCellX = livingCell[0]
+    const liveCellY = livingCell[1]
+    const neighborCells = [[liveCellX - 1 , liveCellY - 1], [liveCellX - 1, liveCellY], [liveCellX - 1, liveCellY + 1], [liveCellX, liveCellY - 1], [liveCellX, liveCellY + 1], [liveCellX + 1, liveCellY - 1], [liveCellX + 1, liveCellY], [liveCellX + 1, liveCellY + 1]]
+
+    let liveNeighborCellCount = 0
+    neighborCells.forEach((neighborCell) => {
+      if (boardAsLivingCellsOnly.find(liveCell => neighborCell[0] === liveCell[0] && neighborCell[1] === liveCell[1])) {
+        liveNeighborCellCount += 1
+      } else {
+        nowDeadButPotentiallyAliveCells.push(neighborCell)
+      }
+    })
+    if (liveNeighborCellCount === 2 || liveNeighborCellCount === 3) {
+      nextLiveCells.push(livingCell)
+    }
+  })
+
+  nowDeadButPotentiallyAliveCells.forEach((nowDeadCell) => {
+    const nowDeadCellX = nowDeadCell[0]
+    const nowDeadCellY = nowDeadCell[1]
+    const neighborCells = [[nowDeadCellX - 1 , nowDeadCellY - 1], [nowDeadCellX - 1, nowDeadCellY], [nowDeadCellX - 1, nowDeadCellY + 1], [nowDeadCellX, nowDeadCellY - 1], [nowDeadCellX, nowDeadCellY + 1], [nowDeadCellX + 1, nowDeadCellY - 1], [nowDeadCellX + 1, nowDeadCellY], [nowDeadCellX + 1, nowDeadCellY + 1]]
+    let liveNeighborCellCount = 0
+    neighborCells.forEach((neighborCell) => {
+      if (boardAsLivingCellsOnly.find(liveCell => neighborCell[0] === liveCell[0] && neighborCell[1] === liveCell[1])) {
         liveNeighborCellCount += 1
       }
     })
+    if (liveNeighborCellCount === 3) {
+      nextLiveCells.push(nowDeadCell)
+    }
   })
+
+  // need to dedup
+  const xyHash = {}
+  const dedupedNextLiveCells = []
+  nextLiveCells.forEach((cell) => {
+    if (!Array.isArray(xyHash[cell[0]])) {
+      xyHash[cell[0]] = [cell[1]]
+      dedupedNextLiveCells.push(cell)
+    } else {
+      const oldValueArray = xyHash[cell[0]]
+      if (!oldValueArray.includes(cell[1])) {
+        const newValueArray = oldValueArray.push(cell[1])
+        xyHash[cell[0]] = newValueArray
+        dedupedNextLiveCells.push(cell)
+      }
+    }
+  })
+
+  return dedupedNextLiveCells
 }
 
-gameOfLifeBestSolution(inputBoard)
+// console.log(gameOfLifeBestSolution(inputBoard))
