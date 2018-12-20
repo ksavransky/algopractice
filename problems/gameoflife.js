@@ -11,35 +11,6 @@
 // The next state is created by applying the above rules simultaneously to every cell in the current state,
 /// where births and deaths occur simultaneously.
 
-function gameOfLifeInPlace(board) {
-  const surroundingLocations = [[-1 , -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]]
-  board.forEach((row, rowIndex) => {
-    row.forEach((cell, columnIndex) => {
-      let liveNearCells = 0
-      surroundingLocations.forEach((location) => {
-        if (board[rowIndex + location[0]]) {
-          let nearCell = board[rowIndex + location[0]][columnIndex + location[1]]
-          if (nearCell === 1) {
-            liveNearCells += 1
-          }
-        }
-      })
-      let newCellState = cell
-      if (cell === 1) {
-        if (liveNearCells < 2) {
-          newCellState = 0
-        } else if (liveNearCells < 4) {
-          newCellState = 1
-        } else if (liveNearCells > 3) {
-          newCellState = 0
-        }
-      } else if (liveNearCells === 3) {
-        newCellState = 1
-      }
-    })
-  })
-
-}
 
 // Input:
 let inputBoard = [
@@ -128,10 +99,10 @@ function gameOfLife(board) {
 // >>	Signed right shift	Shifts right by pushing copies of the leftmost bit in from the left, and let the rightmost bits fall off
 // >>>	Zero fill right shift	Shifts right by pushing zeros in from the left, and let the rightmost bits fall off
 
-var gameOfLifeSolution = function(board){
+var gameOfLifeInPlaceSolution = function(board){
 
     let m = board.length;
-    if (m == 0) return;
+    if (m === 0) return;
 
     let n = board[0].length;
 
@@ -198,5 +169,44 @@ var rescueCell = (row, col, board) => {
 }
 
 
-console.log(gameOfLifeSolution(inputBoard))
-// console.log(inputBoard)
+// console.log(gameOfLifeInPlaceSolution(inputBoard))
+
+// From my interview at Opendoor
+// suggestion was to use only live cell positions as input
+// then for next board state determine only next live cells
+// intermediate step is to next state living cells array and next state now dead but potentially living cells array
+// Solution is better than in place and doesn't use m x n time complexity (except for first step if input is board). would work for an infinite board
+
+// first step is to convert input board to representation of living cells
+// let inputBoard = [
+//   [0,1,0],
+//   [0,0,1],
+//   [1,1,1],
+//   [0,0,0]
+// ]
+// should become:
+// [[0, 1], [1, 2], [2, 0], [2, 1], [2, 2]]
+
+function gameOfLifeBestSolution(board) {
+  const boardAsLivingCellsOnly = []
+  board.forEach((row, rowIndex) => {
+    row.forEach((cell, columnIndex) => {
+      if (cell === 1) {
+        boardAsLivingCellsOnly.push([rowIndex, columnIndex])
+      }
+    })
+  })
+  boardAsLivingCellsOnly.forEach((livingCell) => {
+    const livingCellX = livingCell[0]
+    const livingCellY = livingCell[1]
+    const surroundingCells = [[livingCellX - 1 , livingCellY - 1], [livingCellX - 1, livingCellY], [livingCellX - 1, livingCellY + 1], [livingCellX, livingCellY - 1], [livingCellX, livingCellY + 1], [livingCellX + 1, livingCellY - 1], [livingCellX + 1, livingCellY], [livingCellX + 1, livingCellY + 1]]
+    liveNeighborCellCount = 0
+    surroundingCells.forEach((neighborCell) => {
+      if (boardAsLivingCellsOnly.find(neighborCell)) {
+        liveNeighborCellCount += 1
+      }
+    })
+  })
+}
+
+gameOfLifeBestSolution(inputBoard)

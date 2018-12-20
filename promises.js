@@ -1,22 +1,23 @@
 let momsPromise = new Promise((resolve, reject) => {
+  // change momsSavings to 50000 to see the catch statement execute
   let momsSavings = 70000;
   let priceOfPhone = 60000;
   // imagine that instead of momsSavings > priceOfPhone -- > we have a api call here;
+  // if the call results in a 200 result, we go call the the resolve;
+  // if the call results in a 400 or 500, we go call the reject
   if (momsSavings > priceOfPhone) {
     resolve({
       brand: "iphone",
       model: "6s"
     });
   } else {
-    reject("We donot have enough savings. Let us save some more money.");
+    reject("We do not have enough savings. Let us save some more money.");
   }
 });
 
 momsPromise.then((value) => {
   console.log("Hurray I got this phone as a gift ", JSON.stringify(value));
-});
-
-momsPromise.catch((reason) => {
+}).catch((reason) => {
   console.log("Mom coudn't buy me the phone because ", reason);
 });
 
