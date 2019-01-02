@@ -1,4 +1,3 @@
-'use strict';
 
 /**
  * TripleStack class holds 3 stacks in one array. This is done by interleaving
@@ -58,7 +57,6 @@ export class TripleStack {
 // How would you design a stack which, in addition to push and pop, has a function min which returns the minimum element?
 // Push, pop and min should all operate in 0(1) time.
 
-'use strict';
 
 /**
  * MinStack maintains a current stack minimum by putting an object on the stack
@@ -71,7 +69,7 @@ export class TripleStack {
  * Additional space required in push to create wrapping object to hold min at
  * that point.
  */
-export class MinStack {
+class MinStack {
   constructor() {
     this._stack = [];
   }
@@ -107,5 +105,123 @@ export class MinStack {
 
   isEmpty() {
     return this._stack.length === 0;
+  }
+}
+
+
+
+
+class SetOfStacks {
+  constructor(maxItemsPerStack){
+    this.maxItemsPerStack = maxItemsPerStack
+    this.stacks = [[]]
+  }
+
+  push(value) {
+    let stackWithSpace = null
+    let i = 0
+    while(this.stacks[i]){
+      if (this.stacks[i].length < this.maxItemsPerStack) {
+        stackWithSpace = i
+      }
+      i++
+    }
+    if(stackWithSpace !== null){
+      this.stacks[stackWithSpace].push(value)
+    } else {
+      this.stacks.push([value])
+    }
+    return this.stacks
+  }
+
+  pop() {
+    const lastStackIndex = this.stacks.length - 1
+    const poppedValue = this.stacks[lastStackIndex].pop()
+    if (this.stacks[lastStackIndex].length === 0){
+      this.stacks.pop()
+    }
+
+    return poppedValue
+  }
+
+  popAt(index){
+    const poppedValue = this.stacks[index].pop()
+    if (this.stacks[index].length === 0){
+      this.stacks.splice(index, 1)
+    }
+    return poppedValue
+  }
+}
+
+// const sos1 = new SetOfStacks(3)
+// sos1.push(1)
+// sos1.push(2)
+// sos1.push(3)
+// sos1.push(4)
+// sos1.push(5)
+// sos1.push(6)
+// sos1.push(7)
+// sos1.push(8)
+// sos1.push(9)
+// sos1.pop()
+// sos1.pop()
+// sos1.pop()
+// sos1.pop()
+// sos1.pop()
+// sos1.push(5)
+// sos1.push(6)
+// console.log(sos1.push(7))
+
+/**
+ * Uses two different queues one for dogs and one for cats. Each entry is
+ * assigned a unique identifier which allows dequeueAny to determine which of
+ * the two queues to dequeue an item from.
+ *
+ * N = number of animals
+ * Time: enqueue O(1), dequeue O(1), dequeueAny O(1)
+ * Additional space: enqueue O(N), dequeue O(1), dequeueAny O(1)
+ * Additional space required to hold unique id per animal.
+ */
+export class AnimalShelter {
+  constructor() {
+    this._dogs = [];
+    this._cats = [];
+    this._id = 0;
+  }
+
+  enqueueCat(name) {
+    this._cats.push({
+      name: name,
+      id: ++this._id
+    });
+  }
+
+  enqueueDog(name) {
+    this._dogs.push({
+      name: name,
+      id: ++this._id
+    });
+  }
+
+  dequeueAny() {
+    let dogId = this._dogs.length > 0 ? this._dogs[0].id : Number.POSITIVE_INFINITY,
+      catId = this._cats.length > 0 ? this._cats[0].id : Number.POSITIVE_INFINITY;
+
+    if (dogId !== Number.POSITIVE_INFINITY || catId !== Number.POSITIVE_INFINITY) {
+      if (dogId < catId) {
+        return this._dogs.shift().name;
+      }
+      else {
+        return this._cats.shift().name;
+      }
+    }
+  }
+
+  dequeueCat() {
+    return this._cats.shift().name;
+  }
+
+  dequeueDog() {
+    return this._dogs.shift().name;
   }
 }

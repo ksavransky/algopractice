@@ -31,3 +31,5 @@ function add(tree, values, start, end) {
     add(tree, values, mid + 1, end);
   }
 }
+
+console.log(makeBalancedTree([1,2,3,4,5,6,7]))
