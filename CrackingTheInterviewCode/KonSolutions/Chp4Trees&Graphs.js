@@ -186,28 +186,29 @@ class BinarySearchTree {
 // Given a sorted (increasing order) array with unique integer elements, write an
 // algorithm to create a binary search tree with minimal height.
 
-function createMinHeightBST(inputArray, bst = new BinarySearchTree()){
-  const midPointIndex = Math.floor(inputArray.length / 2)
-  let indexPos = 0
-
-  while (inputArray[midPointIndex + indexPos] || inputArray[midPointIndex - indexPos]) {
-    if (indexPos === 0){
-      const treeNode = new TreeNode(inputArray[midPointIndex])
-      bst.insertNode(treeNode)
-    } else {
-      if (inputArray[midPointIndex + indexPos]){
-        const treeNode = new TreeNode(inputArray[midPointIndex + indexPos])
-        bst.insertNode(treeNode)
-      }
-      if (inputArray[midPointIndex - indexPos]){
-        const treeNode = new TreeNode(inputArray[midPointIndex - indexPos])
-        bst.insertNode(treeNode)
-      }
-    }
-    indexPos++
-  }
-  return bst
-}
+// My solution - WRONG! -- see correct solution below
+// function createMinHeightBST(inputArray, bst = new BinarySearchTree()){
+//   const midPointIndex = Math.floor(inputArray.length / 2)
+//   let indexPos = 0
+//
+//   while (inputArray[midPointIndex + indexPos] || inputArray[midPointIndex - indexPos]) {
+//     if (indexPos === 0){
+//       const treeNode = new TreeNode(inputArray[midPointIndex])
+//       bst.insertNode(treeNode)
+//     } else {
+//       if (inputArray[midPointIndex + indexPos]){
+//         const treeNode = new TreeNode(inputArray[midPointIndex + indexPos])
+//         bst.insertNode(treeNode)
+//       }
+//       if (inputArray[midPointIndex - indexPos]){
+//         const treeNode = new TreeNode(inputArray[midPointIndex - indexPos])
+//         bst.insertNode(treeNode)
+//       }
+//     }
+//     indexPos++
+//   }
+//   return bst
+// }
 
 // console.log(createMinHeightBST([1,2,3,4,5,6,7]))
 
@@ -250,4 +251,81 @@ function add(tree, values, start, end) {
   }
 }
 
-console.log(makeBalancedTree([1,2,3,4,5,6,7]))
+// console.log(makeBalancedTree([1,2,3,4,5,6,7]))
+
+
+class LinkedListNode {
+  constructor(value = null){
+    this.value = value
+    this.prev = null
+    this.next = null
+  }
+}
+
+class SinglyLinkedList {
+  constructor(node = null) {
+    this.head = node
+    this.length = node ? 1 : 0
+  }
+
+  insertNodeHelper(node, currentNode) {
+    if (currentNode.next) {
+      this.insertNodeHelper(node, currentNode.next)
+    } else {
+      currentNode.next = node
+    }
+  }
+
+  insertNode(node) {
+    if (this.head) {
+      this.insertNodeHelper(node, this.head)
+    } else {
+      this.head = node
+    }
+  }
+
+  printList() {
+    if (!this.head) {
+      return 'No nodes in the list.'
+    }
+    let currentNode = this.head
+    const values = []
+    while (currentNode) {
+      values.push(currentNode.value)
+      currentNode = currentNode.next
+    }
+    return values
+  }
+}
+
+const bst1 = new BinarySearchTree()
+bst1.insertNode(new TreeNode(5))
+bst1.insertNode(new TreeNode(2))
+bst1.insertNode(new TreeNode(3))
+bst1.insertNode(new TreeNode(6))
+bst1.insertNode(new TreeNode(4))
+bst1.insertNode(new TreeNode(9))
+bst1.insertNode(new TreeNode(1))
+
+//         5
+//     2       6
+//  1     3       9
+//          4
+
+// List of Depths: Given a binary tree, design an algorithm which creates a linked list of all the nodes
+// at each depth (e.g., if you have a tree with depth D, you'll have D linked lists).
+
+// Kon idea: seems like a job for Breadth First Search or perhaps pass down a marker with DFS?
+
+function listOfDepths (tree) {
+  if (!tree.root) {
+    return "Empty tree"
+  }
+  const queue = [tree.root]
+
+  const result = []
+  while (queue.length > 0) {
+    result.push(queue[0].value)
+    // queue
+  }
+}
