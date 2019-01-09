@@ -300,12 +300,16 @@ class SinglyLinkedList {
 
 const bst1 = new BinarySearchTree()
 bst1.insertNode(new TreeNode(5))
-bst1.insertNode(new TreeNode(2))
+const tn2 = new TreeNode(2)
+bst1.insertNode(tn2)
 bst1.insertNode(new TreeNode(3))
-bst1.insertNode(new TreeNode(6))
+const tn6 = new TreeNode(6)
+bst1.insertNode(tn6)
 bst1.insertNode(new TreeNode(4))
 bst1.insertNode(new TreeNode(9))
 bst1.insertNode(new TreeNode(1))
+// bst1.insertNode(new TreeNode(13))
+// bst1.insertNode(new TreeNode(14))
 
 //         5
 //     2       6
@@ -315,17 +319,230 @@ bst1.insertNode(new TreeNode(1))
 // List of Depths: Given a binary tree, design an algorithm which creates a linked list of all the nodes
 // at each depth (e.g., if you have a tree with depth D, you'll have D linked lists).
 
-// Kon idea: seems like a job for Breadth First Search or perhaps pass down a marker with DFS?
+
+function listOfDepthsHelper(currentLevel, currentNode, linkedLists) {
+  // put current node into a linkedlist
+  if (linkedLists[currentLevel]) {
+    linkedLists[currentLevel].insertNode(new LinkedListNode(currentNode.value))
+  } else {
+    linkedLists[currentLevel] = new SinglyLinkedList(new LinkedListNode(currentNode.value))
+  }
+  if (currentNode.leftChild) {
+    listOfDepthsHelper(currentLevel + 1, currentNode.leftChild, linkedLists)
+  }
+  if (currentNode.rightChild) {
+    listOfDepthsHelper(currentLevel + 1, currentNode.rightChild, linkedLists)
+  }
+}
 
 function listOfDepths (tree) {
   if (!tree.root) {
     return "Empty tree"
   }
-  const queue = [tree.root]
+  const linkedLists = {}
 
-  const result = []
-  while (queue.length > 0) {
-    result.push(queue[0].value)
-    // queue
+  let currentLevel = 0
+  let currentNode = tree.root
+
+  listOfDepthsHelper(currentLevel, currentNode, linkedLists)
+
+  return linkedLists
+}
+
+// console.log(listOfDepths(bst1))
+
+// Check Balanced: Implement a function to check if a binary tree is balanced.
+// For the purposes of this question, a balanced tree is defined to be a tree such
+// that the heights of the two subtrees of any node never differ by more than one.
+
+function checkBalancedHelper(currentNode, currentDepth, depthTracker) {
+  if (!currentNode.leftChild && !currentNode.rightChild) {
+    if (!depthTracker.smallestDepth || currentDepth < depthTracker.smallestDepth) {
+      console.log('in here 1, currentDepth', currentDepth)
+      depthTracker.smallestDepth = currentDepth
+    }
+    if (!depthTracker.largestDepth || currentDepth > depthTracker.largestDepth) {
+      console.log('in here 2, currentDepth', currentDepth)
+      depthTracker.largestDepth = currentDepth
+    }
+  } else {
+    if (depthTracker.smallestDepth && depthTracker.largestDepth && (depthTracker.largestDepth - depthTracker.smallestDepth > 1)) {
+      return false
+    }
+    if (currentNode.leftChild) {
+      checkBalancedHelper(currentNode.leftChild, currentDepth + 1, depthTracker)
+    }
+    if (currentNode.rightChild) {
+      checkBalancedHelper(currentNode.rightChild, currentDepth + 1, depthTracker)
+    }
   }
 }
+
+function checkBalanced(tree) {
+  if (!tree.root) {
+    return "Empty tree"
+  }
+
+  const depthTracker = {
+    smallestDepth: null,
+    largestDepth: null,
+  }
+
+  if (tree.root.leftChild) {
+    checkBalancedHelper(tree.root.leftChild, 1, depthTracker)
+  }
+  if (tree.root.rightChild) {
+    checkBalancedHelper(tree.root.rightChild, 1, depthTracker)
+  }
+
+  return depthTracker.largestDepth - depthTracker.smallestDepth < 2
+}
+
+// console.log(checkBalanced(bst1))
+
+
+/**
+ * To check if a tree is a valid BST we need to check that all the values under
+ * a node are within the ranges defined by the path we took to get there. For
+ * example, initially the root can have any value, every time we go down a left
+ * child that sets an upper bound on the valid values of their children by that
+ * nodes value. Every time you travel down the right child you lower bound the
+ * valid values of their children by that nodes value.
+ *
+ * N = |tree|
+ * Time: O(N)
+ * Additional space: O(lg N) - due to recursion. Assumes a balanced tree, worst
+ * case is O(N)
+ */
+export function isValidBST(tree) {
+  if (!tree) {
+    throw new Error('invalid tree');
+  }
+  return isValidBSTRecursive(tree.root, Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY);
+}
+
+function isValidBSTRecursive(node, min, max) {
+  if (node) {
+    if (node.val < min || node.val > max) {
+      return false;
+    }
+    return isValidBSTRecursive(node.left, min, node.val) &&
+      isValidBSTRecursive(node.right, node.val, max);
+  }
+  return true;
+}
+
+// Successor: Write an algorithm to find the "next" node (i.e., in-order successor)
+// of a given node in a binary search tree. You may assume that each node has a link to its parent.
+
+function findSuccessorHelper(currentNode, targetNode, arrayOfNodes, found) {
+  if (arrayOfNodes.slice(-1)[0] === 'nextNodeIsSuccessor'){
+    arrayOfNodes.push(currentNode)
+    found.found = currentNode
+  } else if (!found.found) {
+    if (currentNode.leftChild){
+      findSuccessorHelper(currentNode.leftChild, targetNode, arrayOfNodes, found)
+    }
+    arrayOfNodes.push(currentNode)
+    if (currentNode === targetNode){
+      arrayOfNodes.push('nextNodeIsSuccessor')
+    }
+    if (currentNode.rightChild){
+      findSuccessorHelper(currentNode.rightChild, targetNode, arrayOfNodes, found)
+    }
+  }
+}
+
+function findSuccessor(tree, targetNode) {
+  if (!tree || !targetNode){
+    return 'No tree or node'
+  }
+  const arrayOfNodes = []
+  const found = {found: null}
+  findSuccessorHelper(tree.root, targetNode, arrayOfNodes, found)
+  return found.found
+}
+
+// console.log(findSuccessor(bst1, tn6))
+// console.log(findSuccessor(bst1, tn2))
+
+'use strict';
+
+/**
+ * Finding the successor as a few different scenarios:
+ *   1. Where a right child exists:
+ *     a. If it has no left child then it is the successor.
+ *     b. If it has a left child then keep following left child pointers until
+ *     you've got the left most child, this is the successor.
+ *   2. Where no right child exists:
+ *     a. If this node is a left child then the successor is its parent.
+ *     b. Otherwise follow parent pointers until we find a node that is a left
+ *     child of its parent, then the parent is the successor.
+ *
+ * N = |tree|
+ * Time: O(lg N) - assumes balanced tree, worst cast O(N)
+ * Additional space: O(1)
+ */
+export function findSuccessor(node) {
+  if (!node) {
+    throw new Error('node cannot be null');
+  }
+
+  let snode;
+  if (node.right) {
+    snode = node.right;
+    while (snode.left) {
+      snode = snode.left;
+    }
+    return snode.val;
+  }
+  else {
+    // go up until we find left path
+    snode = node;
+    while (snode.parent && snode !== snode.parent.left) {
+      snode = snode.parent;
+    }
+    return snode.parent ? snode.parent.val : undefined;
+  }
+}
+
+
+// Build Order: You are given a list of projects and a list of dependencies
+// (which is a list of pairs of projects, where the second project is dependent on the first project).
+// All of a project's dependencies must be built before the project is.
+// Find a build order that will allow the projects to be built.
+// If there is no valid build order, return an error.
+// EXAMPLE
+//
+// Input:
+const projects = ['a', 'b', 'c', 'd', 'e', 'f']
+const dependencies = [['a', 'd'], ['f', 'b'], ['b', 'd'], ['f', 'a'], ['d', 'c']]
+//
+// Output: f, e, a, b, d, c
+
+// Kon's graph
+// e
+//
+// a --> d --> c
+// ^     ^
+// |     |
+// f --> b
+
+// idea: do ones that have no dep first
+// then follow depend
+
+function buildOrder(projects, dependencies) {
+  const result = []
+  const projectsWithDep = new Set()
+  dependencies.forEach((dep) => {
+    projectsWithDep.add(dep[1])
+  })
+  const projectsWithOutDep = projects.filter((project) => {
+    return !projectsWithDep.has(project)
+  })
+  console.log('projectsWithDep', projectsWithDep)
+  console.log('projectsWithOutDep', projectsWithOutDep)
+  projectsWithOutDep.forEach((proj) => {result.push(proj)})
+}
+
+buildOrder(projects, dependencies)
