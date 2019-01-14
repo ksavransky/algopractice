@@ -531,8 +531,10 @@ const dependencies = [['a', 'd'], ['f', 'b'], ['b', 'd'], ['f', 'a'], ['d', 'c']
 // idea: do ones that have no dep first
 // then follow depend
 
-function buildOrder(projects, dependencies) {
-  const result = []
+function buildOrder(projects, dependencies, result = []) {
+  if (dependencies.length === 0) {
+    return result
+  }
   const projectsWithDep = new Set()
   dependencies.forEach((dep) => {
     projectsWithDep.add(dep[1])
@@ -540,9 +542,16 @@ function buildOrder(projects, dependencies) {
   const projectsWithOutDep = projects.filter((project) => {
     return !projectsWithDep.has(project)
   })
-  console.log('projectsWithDep', projectsWithDep)
-  console.log('projectsWithOutDep', projectsWithOutDep)
   projectsWithOutDep.forEach((proj) => {result.push(proj)})
+  dependencies = dependencies.filter((dep) => {
+    return !result.includes(dep[0])
+  })
+  // console.log('dependencies', dependencies)
+  // console.log('projectsWithOutDep', projectsWithOutDep)
+  // console.log('projectsWithDep', projectsWithDep)
+  // console.log('result', result)
+  // projects.filter()
+  return buildOrder(projects, dependencies, result)
 }
 
-buildOrder(projects, dependencies)
+console.log(buildOrder(projects, dependencies))

@@ -336,6 +336,7 @@ sampleBT.insert(25)
 sampleBT.insert(30)
 sampleBT.insert(4)
 sampleBT.insert(1)
+
 //
 // console.log(sampleBT.findMinNode(sampleBT.root))
 // console.log(sampleBT.size(sampleBT.root))
