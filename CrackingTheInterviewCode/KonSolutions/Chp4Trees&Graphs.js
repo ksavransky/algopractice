@@ -305,9 +305,11 @@ bst1.insertNode(tn2)
 bst1.insertNode(new TreeNode(3))
 const tn6 = new TreeNode(6)
 bst1.insertNode(tn6)
-bst1.insertNode(new TreeNode(4))
+const tn4 = new TreeNode(4)
+bst1.insertNode(tn4)
 bst1.insertNode(new TreeNode(9))
-bst1.insertNode(new TreeNode(1))
+const tn1 = new TreeNode(1)
+bst1.insertNode(tn1)
 // bst1.insertNode(new TreeNode(13))
 // bst1.insertNode(new TreeNode(14))
 
@@ -533,7 +535,7 @@ const dependencies = [['a', 'd'], ['f', 'b'], ['b', 'd'], ['f', 'a'], ['d', 'c']
 
 function buildOrder(projects, dependencies, result = []) {
   if (dependencies.length === 0) {
-    return result
+    return result.concat(projects)
   }
   const projectsWithDep = new Set()
   dependencies.forEach((dep) => {
@@ -546,12 +548,50 @@ function buildOrder(projects, dependencies, result = []) {
   dependencies = dependencies.filter((dep) => {
     return !result.includes(dep[0])
   })
-  // console.log('dependencies', dependencies)
-  // console.log('projectsWithOutDep', projectsWithOutDep)
-  // console.log('projectsWithDep', projectsWithDep)
-  // console.log('result', result)
-  // projects.filter()
+  projects = projects.filter((project) => {
+      return !result.includes(project)
+  })
   return buildOrder(projects, dependencies, result)
 }
 
-console.log(buildOrder(projects, dependencies))
+// console.log(buildOrder(projects, dependencies))
+
+
+// First Common Ancestor: Design an algorithm and write code to find the first common ancestor
+// of two nodes in a binary tree.
+// Avoid storing additional nodes in a data structure. NOTE: This is not necessarily a binary search tree.
+
+// Kon idea: go through tree and store parent in each node.
+// Then take two nodes and while loop up the tree marking each node as seen until you hit one that is seen by both
+
+function insertParentIntoTreeNodes(parentNode) {
+  if (parentNode.leftChild){
+    parentNode.leftChild.parentNode = parentNode
+    insertParentIntoTreeNodes(parentNode.leftChild)
+  }
+  if (parentNode.rightChild){
+    parentNode.rightChild.parentNode = parentNode
+    insertParentIntoTreeNodes(parentNode.rightChild)
+  }
+}
+
+function firstCommonAncestor(tree, node1, node2){
+  if (!tree.root || !node1 || !node2) {
+    return 'missing args to run firstCommonAncestor'
+  }
+  insertParentIntoTreeNodes(tree.root)
+  let node1SearchNode = node1
+  while (node1SearchNode) {
+    node1SearchNode.marked = true
+    node1SearchNode = node1SearchNode.parentNode
+  }
+  let node2SearchNode = node2
+  while (node2SearchNode) {
+    if (node2SearchNode.marked){
+      return node2SearchNode
+    }
+    node2SearchNode = node2SearchNode.parentNode
+  }
+}
+
+// console.log(firstCommonAncestor(bst1, tn1, tn4))
