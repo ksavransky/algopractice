@@ -643,3 +643,88 @@ function moveUp(node, count) {
   }
   return node;
 }
+
+
+// BST Sequences: A binary search tree was created by traversing through an array
+// from left to right and inserting each element.
+// Given a binary search tree with distinct elements,
+// print all possible arrays that could have led to this tree.
+
+// e.g.
+//         7
+//    4         10
+// 2     5   9     11
+
+const bstSequenceTree = new BinarySearchTree()
+bstSequenceTree.insertNode(new TreeNode(7))
+bstSequenceTree.insertNode(new TreeNode(4))
+bstSequenceTree.insertNode(new TreeNode(10))
+bstSequenceTree.insertNode(new TreeNode(2))
+bstSequenceTree.insertNode(new TreeNode(5))
+bstSequenceTree.insertNode(new TreeNode(9))
+bstSequenceTree.insertNode(new TreeNode(11))
+
+// outputs:
+// [7] + [4, 10] + [2, 5, 9, 11]
+// [7] + [4, 10] + [2, 5, 11, 9]
+// [7] + [4, 10] + [2, 9, 5, 11]
+// [7] + [4, 10] + [2, 9, 11, 5]
+// [7] + [4, 10] + [2, 11, 5, 9]
+// [7] + [4, 10] + [2, 11, 9, 5]
+//
+// [7] + [4, 10] + [5, 2, 9, 11]
+// [7] + [4, 10] + [5, 2, 11, 9]
+// [7] + [4, 10] + [5, 9, 2, 11]
+// [7] + [4, 10] + [5, 9, 11, 2]
+// [7] + [4, 10] + [5, 11, 2, 9]
+// [7] + [4, 10] + [5, 11, 9, 2]
+//
+// // etc..
+//
+// [7] + [10, 4] + [2, 5, 9, 11]
+// etc...
+
+// My idea: I think we need to first do a BFS and mark the depth of each node to that into an array
+// and take every combo of that depth level; see outputs I made above to understand
+
+function getDepthArrays(root) {
+  const queue = [root]
+  const result = {}
+
+  while(queue.length > 0){
+    const currentNode = queue.shift()
+    if (!result[currentNode.depth]){
+      result[currentNode.depth] = []
+    }
+    result[currentNode.depth].push(currentNode)
+    if(currentNode.leftChild){
+      queue.push(currentNode.leftChild)
+    }
+    if(currentNode.rightChild){
+      queue.push(currentNode.rightChild)
+    }
+  }
+  return result
+}
+
+function markDepths(node, depth = 0){
+  node.depth = depth
+  if (node.leftChild){
+    markDepths(node.leftChild, depth + 1)
+  }
+  if (node.rightChild){
+    markDepths(node.rightChild, depth + 1)
+  }
+}
+
+function bstSequence(tree){
+  if (!tree.root){
+    return 'no root node'
+  }
+  markDepths(tree.root)
+  // console.log(tree.root.rightChild)
+  const depthArrays = getDepthArrays(tree.root)
+  return depthArrays
+}
+
+console.log(bstSequence(bstSequenceTree))
