@@ -696,7 +696,7 @@ function getDepthArrays(root) {
     if (!result[currentNode.depth]){
       result[currentNode.depth] = []
     }
-    result[currentNode.depth].push(currentNode)
+    result[currentNode.depth].push(currentNode.value)
     if(currentNode.leftChild){
       queue.push(currentNode.leftChild)
     }
@@ -717,14 +717,34 @@ function markDepths(node, depth = 0){
   }
 }
 
+createDifferentInputArray(depthArrays){
+  const resultArrays = []
+
+}
+
 function bstSequence(tree){
   if (!tree.root){
     return 'no root node'
   }
   markDepths(tree.root)
-  // console.log(tree.root.rightChild)
   const depthArrays = getDepthArrays(tree.root)
-  return depthArrays
+  // { '0': [ 7 ], '1': [ 4, 10 ], '2': [ 2, 5, 9, 11 ] }
+  return createDifferentInputArray(depthArrays)
 }
 
-console.log(bstSequence(bstSequenceTree))
+// console.log(bstSequence(bstSequenceTree))
+
+function getAllCombos(array) {
+  const combos = []
+  array.forEach((el, index) => {
+    const subArray = []
+
+  })
+}
+
+// [1,2,3]
+// [1,3,2]
+// [2,1,3]
+// [2,3,1]
+// [3,1,2]
+// [3,2,1]
