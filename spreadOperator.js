@@ -27,3 +27,12 @@ const obj1 = {
 spreadAnObject(obj1)
 // 1
 // 2
+
+
+var myArray = ['a', 'b', 'c', 'd'];
+// myArray.push('end');
+// myArray.unshift('start');
+// console.log(myArray); // ["start", "a", "b", "c", "d", "end"]
+
+myArray = ['start', ...myArray, 'end'];
+// console.log(myArray); // ["start", "a", "b", "c", "d", "end"]
