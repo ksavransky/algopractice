@@ -12,6 +12,19 @@
 //Using delegate prototypes (setting the prototype of one instance to refer to an examplar object),
 //it’s literally Objects Linking to Other Objects, or OLOO, as Kyle Simpson calls it.
 
+function Dog(name) {
+  this.name = name
+}
+
+// By placing bark on Dog.prototype, we made it available to all instances of Dog.
+
+Dog.prototype.bark = function() {
+ console.log(this.name + ' says woof!');
+};
+
+let fido = new Dog('fido')
+fido.bark()
+
 // 3. JAVASCRIPT: Using concatenative inheritance, you just copy properties from an exemplar object to a new instance.
 // Concatenative inheritance: The process of inheriting features directly from one object to another by copying the source objects properties.
 // In JavaScript, source prototypes are commonly referred to as mixins.
@@ -58,7 +71,9 @@ const ChannelStrip = (options) => {
 // Names the object type after the constructor, which you’ll notice mostly in the debugging console. You’ll see `[Object Foo]`, for example, instead of `[Object object]`.
 // Allows `instanceof` to check whether or not an object’s prototype reference is the same object referenced by the .prototype property of the constructor.
 
+// ------------------------------------------------
 
+// Factories (alternative to constructor function like Dog example above)
 
 // Any function can create and return objects. When it’s not a constructor function, it’s called a factory function.
 
@@ -72,6 +87,9 @@ let animal = {
 };
 
 // Object.create(animal) makes a copy of the animal object
+// OTHERWISE after Object.assign call, the animal object  will have the new assigned properties e.g. animalType
+// we don't want that, we only want the new mouse object created by the factory to have that property
+
 // Object.assign, takes the cloned animal object as it's first argument, and then assigns new parameters to it
 
 let mouseFactory = function mouseFactory () {
@@ -84,9 +102,11 @@ let mouseFactory = function mouseFactory () {
 };
 
 let mickey = mouseFactory();
-// console.log(mickey.describe())
+console.log(animal)
+console.log(mickey.describe())
 
 
+// ------------------------------------------------
 
 // Deep dive into prototypal inheritance
 // https://medium.com/@kevincennis/prototypal-inheritance-781bccc97edb
@@ -107,19 +127,19 @@ typeof foo.prototype // ‘object’
 // — I’m using the function to construct a new object!!!
 // Any time you see the new keyword, it means that the following function is being used as a constructor.
 
-function Dog(name) {
+function Doggy(name) {
   this.name = name
 }
 
 // By placing bark on Dog.prototype, we made it available to all instances of Dog.
 
-Dog.prototype.bark = function() {
+Doggy.prototype.bark = function() {
  console.log('woof!');
 };
 
-let fido = new Dog('fido')
-// console.log(fido) // Dog {name: 'fido'}
-// fido.bark() // woof
+let fido2 = new Doggy('fido')
+// console.log(fido2) // Doggy {name: 'fido'}
+// fido2.bark() // woof
 
 //
 // JavaScript uses an inheritance model called “differential inheritance”.
@@ -156,13 +176,14 @@ function Square( length ) {
  this.width = this.height = length;
 }
 // console.log(Rectangle.prototype)
-Square.prototype = Object.create( Rectangle.prototype );
+Square.prototype = Object.create(Rectangle.prototype); // use Object.create to clone Rectangle.prototype or else will set new Square properties on both
 // console.log(Square.prototype)
 let sq1 = new Square(2)
-// console.log(sq1.area()) // 4
+console.log(sq1.area()) // 4
 
 
 
+// ------------------------------------------------
 
 
 // https://medium.com/ecmascript-2015/es6-classes-and-inheritance-607804080906
@@ -170,39 +191,39 @@ let sq1 = new Square(2)
 // Overview — an example of ES6 class syntax and ES5 equivalent
 
 // ES6 class syntax:
-class Vehicle {
-  constructor (name, type) {
-    this.name = name;
-    this.type = type;
-  }
-
-  getName () {
-    return this.name;
-  }
-
-  getType () {
-    return this.type;
-  }
-
-}
-let car = new Vehicle('Tesla', 'car');
-console.log(car.getName()); // Tesla
-console.log(car.getType()); // car
+// class Vehicle {
+//   constructor (name, type) {
+//     this.name = name;
+//     this.type = type;
+//   }
+//
+//   getName () {
+//     return this.name;
+//   }
+//
+//   getType () {
+//     return this.type;
+//   }
+//
+// }
+// let car = new Vehicle('Tesla', 'car');
+// console.log(car.getName()); // Tesla
+// console.log(car.getType()); // car
 
 // ES5 equivalent could be something like this:
 
-function Vehicle (name, type) {
-  this.name = name;
-  this.type = type;
-};
-
-Vehicle.prototype.getName = function getName () {
-  return this.name;
-};
-
-Vehicle.prototype.getType = function getType () {
-  return this.type;
-};
+// function Vehicle (name, type) {
+//   this.name = name;
+//   this.type = type;
+// };
+//
+// Vehicle.prototype.getName = function getName () {
+//   return this.name;
+// };
+//
+// Vehicle.prototype.getType = function getType () {
+//   return this.type;
+// };
 // var car = new Vehicle('Tesla', 'car');
 // console.log(car.getName()); // Tesla
 // console.log(car.getType()); // car
@@ -223,10 +244,11 @@ Vehicle.prototype.getType = function getType () {
   return this.type;
 };
 
-// to set name to car i.e. like super(name, 'car');
 
 function Car (name) {
-  Vehicle.call(this, name, ‘car’);
+  // to set name to car i.e. like super(name, 'car');
+  // calling Vehicle's constructor and passing in name param from Car constructor and 'car' as type param
+  Vehicle.call(this, name, 'car'); // first param to call function is context 'this'
 }
 
 // Car to inherit Vehicles methods
@@ -239,65 +261,65 @@ Car.parent = Vehicle.prototype;
 Car.prototype.getName = function () {
   return 'It is a car: '+ this.name;
 };
-// var car = new Car('Tesla');
-// console.log(car.getName()); // It is a car: Tesla
-// console.log(car.getType()); // car
+var car = new Car('Tesla');
+console.log(car.getName()); // It is a car: Tesla
+console.log(car.getType()); // car
 
 //es6
-class Vehicle {
+// class Vehicle {
+//
+//   constructor (name, type) {
+//     this.name = name;
+//     this.type = type;
+//   }
+//
+//   getName () {
+//     return this.name;
+//   }
+//
+//   getType () {
+//     return this.type;
+//   }
+//
+// }
 
-  constructor (name, type) {
-    this.name = name;
-    this.type = type;
-  }
-
-  getName () {
-    return this.name;
-  }
-
-  getType () {
-    return this.type;
-  }
-
-}
-
-class Car extends Vehicle {
-
-  constructor (name) {
-    super(name, 'car');
-  }
-
-  getName () {
-    return 'It is a car: ' + super.getName();
-  }
-
-}
+// class Car extends Vehicle {
+//
+//   constructor (name) {
+//     super(name, 'car');
+//   }
+//
+//   getName () {
+//     return 'It is a car: ' + super.getName();
+//   }
+//
+// }
 // let car = new Car('Tesla');
 // console.log(car.getName()); // It is a car: Tesla
 // console.log(car.getType()); // car
 
 // static
 
-class Vehicle {
-
-  constructor (name, type) {
-    this.name = name;
-    this.type = type;
-  }
-
-  getName () {
-    return this.name;
-  }
-
-  getType () {
-    return this.type;
-  }
-
-  static create (name, type) {
-    return new Vehicle(name, type);
-  }
-
-}
+// class Vehicle {
+//
+//   constructor (name, type) {
+//     this.name = name;
+//     this.type = type;
+//   }
+//
+//   getName () {
+//     return this.name;
+//   }
+//
+//   getType () {
+//     return this.type;
+//   }
+//
+//   static create (name, type) {
+//     return new Vehicle(name, type);
+//   }
+//
+// }
 // let car = Vehicle.create('Tesla', 'car');
 // console.log(car.getName()); // Tesla
 // console.log(car.getType()); // car
