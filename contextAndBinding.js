@@ -101,3 +101,125 @@ var obj = {
 // Hence arguments[0]() is nothing but calling fn(). Inside fn now, the scope of this function becomes the arguments array, and logging the length of arguments[] will return 2.
 //
 // Hence the output will be as above.
+
+
+// ------------------------------------------------
+// BINDING
+
+let jimbot = {
+  name: 'Jimbot',
+  greet: function (){
+    console.log('Say hello to' + ' ' + this.name);
+  }
+};
+
+// jimbot.greet() //=> 'Say hello to Jimbot'
+
+let bobBot = { name: 'Bobbot' }
+
+let greetBob = jimbot.greet.bind(bobBot)
+
+// greetBob() // 'Say hello to Bobbot'
+
+// ------------------------------------------------
+
+// Implementing bind
+// https://medium.com/@mrjimbot/function-bind-implementation-a69d60c5a17e
+
+const bind = function(func, context) {
+  // get arguments besides caller func we are binding and the context (hence slice from 2) e.g. ; 'foo' in example below
+  // note: arguments are array-like (really and object) that's why we can't call slice directly on them
+  let previousArgs = [].slice.call(arguments, 2);
+  return function() {
+    // get a copy of arguments passed into bound function; e.g. 'bar' in example below
+    let currentArgs = [].slice.call(arguments);
+    // combine previous (i.e. bound arguments) and arguments used when bound function is called; e.g. ['foo', 'bar'] in example
+    let combinedArgs = previousArgs.concat(currentArgs)
+    // call the function using apply, passing in the context and an array of the combined pre and post binding arguments
+    return func.apply(context, combinedArgs);
+  }
+};
+
+const es6bind = (func, context, ...initialArgs) => {
+  // get arguments besides caller func we are binding and the context (hence slice from 2) e.g. ; 'foo' in example below
+  // note: arguments are array-like (really and object) that's why we can't call slice directly on them
+  return (...newArgs) => {
+    // get a copy of arguments passed into bound function; e.g. 'bar' in example below
+    // combine previous (i.e. bound arguments) and arguments used when bound function is called; e.g. ['foo', 'bar'] in example
+    let combinedArgs = initialArgs.slice(2).concat(newArgs)
+    // call the function using apply, passing in the context and an array of the combined pre and post binding arguments
+    return func.apply(context, combinedArgs);
+  }
+};
+
+// Using bind to bind a first argument to a function (similar to what you can do with a closure)
+
+var addFunc = function(a, b){ return a + b }; // method
+
+// binding (with previous arguments, i.e. 'foo')
+var boundAddFunc = es6bind(addFunc, null, 'foo'); // note: no context passed because this not used;
+
+// same as
+// var boundAddFunc = addFunc.bind(null, 'foo')
+
+console.log(boundAddFunc('bar')); //=> 'foobar' // output (with current arguments)
+
+
+const boundGreet = bind(jimbot.greet, { name: 'Janice' });
+
+boundGreet() //=> 'Say hello to Janice'
+// ------------------------------------------------
+
+//
+// Function.prototype.bind = function(context) {
+//   // method is attached to the prototype, so just refer to it as this.
+//   let func = this;
+//   let previousArgs = [].slice.call(arguments, 1);
+//
+//   return function(){
+//     let currentArgs = [].slice.call(arguments);
+//     let combinedArgs = [].concat(previousArgs, currentArgs);
+//     return func.apply(context, combinedArgs);
+//   };
+// };
+
+// ------------------------------------------------
+
+// Call function
+
+function showProfileMessage(message, secondMessage = '') {
+ console.log(message, this.name, secondMessage);
+}
+const obj2 = {
+ name: "Ankur Anand"
+};
+showProfileMessage.call(obj2, "Welcome", 'you fool'); // Welcome Ankur Anand you fool
+
+// Implement call -- probably too much for an interview
+// https://blog.usejournal.com/implement-your-own-call-apply-and-bind-method-in-javascript-42cc85dba1b
+
+Function.prototype.myOwnCall = function(someOtherThis) {
+  // 'this' is the function that will be called
+  // 'someOtherThis' is the context, i.e. object that will be passed in to the call/myOwnCall method
+  // so we literally add the function 'this' to the context object and call it 'fnName'
+  someOtherThis.fnName = this;
+  let args = [];
+
+  // arguments are saved in strings, using args
+  for (let i = 1, len = arguments.length; i < len; i++) {
+    args.push("arguments[" + i + "]");
+  }
+
+  // console.log('argsssss', args) // [arguments[1],argument[2]]
+
+  // strings are reparsed into statements in the eval method
+  // Here args automatically calls the Array.toString() method.
+  // console.log('eval call:', "someOtherThis.fnName(" + args + ")") // "someOtherThis.fnName(arguments[1],argument[2])"
+
+  // eval executes strings as code
+  eval("someOtherThis.fnName(" + args + ")");
+};
+
+showProfileMessage.myOwnCall(obj2, "Welcome", "you fool"); // Welcome Ankur Anand
+
+// ------------------------------------------------
