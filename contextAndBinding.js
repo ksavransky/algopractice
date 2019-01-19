@@ -69,6 +69,35 @@ var myObject = {
 
 // ------------------------------------------------
 
+
+var myObj = {
+
+    specialFunction: function () {
+      console.log("you're so special!")
+    },
+
+    getAsyncData: function (cb) {
+        cb();
+    },
+
+    render: function () {
+        var that = this; // this refers to myObj
+        this.getAsyncData(function () {
+            // 'this' refers to global
+            // this.specialFunction() // throws an error
+            // 'that' is passed down and refers to myObj
+            that.specialFunction();
+        });
+    }
+};
+
+myObj.render(); // you're so special
+
+// If we had left our function calls as this.specialFunction(), then we would have received the following error:
+// Uncaught TypeError: Object [object global] has no method 'specialFunction'
+
+// ------------------------------------------------
+
 var length = 10;
 function fn() {
 	console.log(this.length);
@@ -140,29 +169,25 @@ const bind = function(func, context) {
   }
 };
 
+// using es6 an passing in args instead of not passing in args above (using arguments instead above)
 const es6bind = (func, context, ...initialArgs) => {
-  // get arguments besides caller func we are binding and the context (hence slice from 2) e.g. ; 'foo' in example below
-  // note: arguments are array-like (really and object) that's why we can't call slice directly on them
   return (...newArgs) => {
-    // get a copy of arguments passed into bound function; e.g. 'bar' in example below
-    // combine previous (i.e. bound arguments) and arguments used when bound function is called; e.g. ['foo', 'bar'] in example
-    let combinedArgs = initialArgs.slice(2).concat(newArgs)
-    // call the function using apply, passing in the context and an array of the combined pre and post binding arguments
-    return func.apply(context, combinedArgs);
+    return func.apply(context, initialArgs.concat(newArgs));
   }
 };
 
 // Using bind to bind a first argument to a function (similar to what you can do with a closure)
 
-var addFunc = function(a, b){ return a + b }; // method
+var addFunc = function(a, b, c = ''){ return a + b + c }; // method
 
 // binding (with previous arguments, i.e. 'foo')
+// var boundAddFunc = bind(addFunc, null, 'foo'); // note: no context passed because this not used;
 var boundAddFunc = es6bind(addFunc, null, 'foo'); // note: no context passed because this not used;
 
 // same as
 // var boundAddFunc = addFunc.bind(null, 'foo')
 
-console.log(boundAddFunc('bar')); //=> 'foobar' // output (with current arguments)
+console.log(boundAddFunc('bar', 'cat')); //=> 'foobar' // output (with current arguments)
 
 
 const boundGreet = bind(jimbot.greet, { name: 'Janice' });
@@ -182,6 +207,43 @@ boundGreet() //=> 'Say hello to Janice'
 //     return func.apply(context, combinedArgs);
 //   };
 // };
+
+// ------------------------------------------------
+
+// https://javascript.info/bind
+// Bind related puzzles
+
+
+// A function cannot be re-bound.
+function f() {
+  console.log(this.name);
+}
+
+f = f.bind( {name: "John"} ).bind( {name: "Pete"} );
+
+// f(); // John
+//
+// The exotic bound function object returned by f.bind(...) remembers the context
+// (and arguments if provided) only at creation time.
+// A function cannot be re-bound.
+
+
+// The result of bind is another object. Properties don't get carried over.
+function sayHi() {
+  console.log( this.name );
+}
+sayHi.test = 5;
+
+console.log('sayHi.test', sayHi.test) // 5
+
+let boundHi = sayHi.bind({
+  name: "John"
+});
+
+console.log( 'boundHi.test', boundHi.test ); // what will be the output? why?
+// The answer: undefined.
+//
+// The result of bind is another object. It does not have the test property.
 
 // ------------------------------------------------
 
@@ -221,5 +283,3 @@ Function.prototype.myOwnCall = function(someOtherThis) {
 };
 
 showProfileMessage.myOwnCall(obj2, "Welcome", "you fool"); // Welcome Ankur Anand
-
-// ------------------------------------------------
