@@ -16,9 +16,9 @@ let momsPromise = new Promise((resolve, reject) => {
 });
 
 momsPromise.then((value) => {
-  console.log("Hurray I got this phone as a gift ", JSON.stringify(value));
+  console.log("Moms Promise: Hurray I got this phone as a gift ", JSON.stringify(value));
 }).catch((reason) => {
-  console.log("Mom coudn't buy me the phone because ", reason);
+  console.log("Moms Promise: Mom coudn't buy me the phone because ", reason);
 });
 
 // .finally doesn't work in node
@@ -29,6 +29,53 @@ momsPromise.then((value) => {
 // });
 
 
+let myFirstPromise = new Promise((resolve, reject) => {
+  // We call resolve(...) when what we were doing asynchronously was successful, and reject(...) when it failed.
+  // In this example, we use setTimeout(...) to simulate async code.
+  // In reality, you will probably be using something like XHR or an HTML5 API.
+  setTimeout(function(){
+    resolve("Success!"); // Yay! Everything went well!
+  }, 2000);
+});
+
+// myFirstPromise.then((successMessage) => {
+//   // successMessage is whatever we passed in the resolve(...) function above.
+//   // It doesn't have to be a string, but if it is only a succeed message, it probably will be.
+//   console.log("Finally: " + successMessage);
+// });
+// Finally: Success!    ... after 2000ms
+
+
+const konRandomDelayedPromise = new Promise((resolve, reject) => {
+  const randomSecondsCallDelay = parseInt((Math.random() * 5), 10)
+  setTimeout(() => {
+    const randomNumber = parseInt((Math.random() * 10), 10)
+    if (randomNumber < 5) {
+      resolve('status 200 yo')
+    } else {
+      reject('status 400 something yo')
+    }
+  }, randomSecondsCallDelay * 1000)
+})
+
+// wrap promise execution (i.e. then catch calls in a function, so it is executed when you want)
+function callKonRandomDelayedPromise() {
+  konRandomDelayedPromise.then((value) => {
+    console.log('Your promise resolved successfully: ' + value)
+  }).catch((error) => {
+    console.log('Your promise failed: ' + error)
+  })
+}
+
+callKonRandomDelayedPromise()
+// output after random second delay:
+// Your promise resolved successfully: status 200 yo
+// or:
+// Your promise failed: status 400 something you
+
+
+// -------------------------------------
+// Example with xhr call
 // E.g.
 // function myAsyncFunction(url) {
 //   return new Promise((resolve, reject) => {
@@ -39,24 +86,6 @@ momsPromise.then((value) => {
 //     xhr.send();
 //   });
 // }
-
-let myFirstPromise = new Promise((resolve, reject) => {
-  // We call resolve(...) when what we were doing asynchronously was successful, and reject(...) when it failed.
-  // In this example, we use setTimeout(...) to simulate async code.
-  // In reality, you will probably be using something like XHR or an HTML5 API.
-  setTimeout(function(){
-    resolve("Success!"); // Yay! Everything went well!
-  }, 2000);
-});
-
-myFirstPromise.then((successMessage) => {
-  // successMessage is whatever we passed in the resolve(...) function above.
-  // It doesn't have to be a string, but if it is only a succeed message, it probably will be.
-  console.log("Finally: " + successMessage);
-});
-
-console.log(myFirstPromise)
-
 
 // -------------------------------------
 // https://hackernoon.com/understanding-promises-in-javascript-13d99df067c1
@@ -112,3 +141,54 @@ console.log(myFirstPromise)
 
 // .finally is declared for a promise then it will be executed whenever a promise is settled
 // irrespective of whether it is fulfilled or rejected
+
+// -------------------------------------
+
+// https://hackernoon.com/understanding-promises-in-javascript-13d99df067c1
+
+// There are four static methods in Promise object.
+//
+// The first two are helpers methods or shortcuts. They help you create resolved or rejected promises easily.
+
+// 1. Promise.reject(reason)
+
+// var promiseRejected = Promise.reject("Not interested");
+// promiseRejected.then(function(value){
+//   console.log("This will not run as it is a resolved promise. The resolved value is ", value);
+// });
+// promiseRejected.catch(function(reason){
+//   console.log("This run as it is a rejected promise. The reason is ", reason);
+// });
+// NOTE: doesn't work in Node; works in browser
+//This run as it is a rejected promise. The reason is  Not interested
+
+// 2. Promise.resolve(value)
+
+// var promiseResolved = Promise.resolve(1);
+// promiseResolved.then(function(value){
+//   console.log("This will run as it is a resovled promise. The resolved value is ", value);
+// });
+// promiseResolved.catch(function(reason){
+//   console.log("This will not run as it is a resolved promise", reason);
+// });
+// This will run as it is a resovled promise. The resolved value is  1
+
+// On a sidenote a promise can have multiple handlers. So you can update the above code to:
+// var promise4 = Promise.resolve(1);
+// promise4.then(function(value){
+//   console.log("This will run as it is a resovled promise. The resolved value is ", value);
+// });
+// promise4.then(function(value){
+//   console.log("This will also run as multiple handlers can be added. Printing twice the resolved value which is ", value * 2);
+// });
+// promise4.catch(function(reason){
+//   console.log("This will not run as it is a resolved promise", reason);
+// });
+// This will run as it is a resovled promise. The resolved value is  1
+// This will also run as multiple handlers can be added. Printing twice the resolved value which is  2
+
+// 3. Promise.All
+
+// The Promise.all(iterable) method returns a single Promise that resolves when all of
+// the promises in the iterable argument have resolved or when the iterable argument contains no promises.
+//  It rejects with the reason of the first promise that rejects.
