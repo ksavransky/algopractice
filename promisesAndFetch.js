@@ -73,6 +73,14 @@ callKonRandomDelayedPromise()
 // or:
 // Your promise failed: status 400 something you
 
+// -------------------------------------
+
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+delay(3000).then(() => console.log('runs after 3 seconds'));
 
 // -------------------------------------
 // Example with xhr call
@@ -192,3 +200,77 @@ callKonRandomDelayedPromise()
 // The Promise.all(iterable) method returns a single Promise that resolves when all of
 // the promises in the iterable argument have resolved or when the iterable argument contains no promises.
 //  It rejects with the reason of the first promise that rejects.
+
+const konRandomDelayedPromise1Resolve = new Promise((resolve, reject) => {
+  const randomSecondsCallDelay = parseInt((Math.random() * 5), 10)
+  setTimeout(() => {
+    resolve('konRandomDelayedPromise1Resolve: status 200 yo')
+  }, randomSecondsCallDelay * 1000)
+})
+
+const konRandomDelayedPromise2Resolve = new Promise((resolve, reject) => {
+  const randomSecondsCallDelay = parseInt((Math.random() * 5), 10)
+  setTimeout(() => {
+    resolve('konRandomDelayedPromise2Resolve: status 200 yo')
+  }, randomSecondsCallDelay * 1000)
+})
+
+const konRandomDelayedPromise3Resolve = new Promise((resolve, reject) => {
+  const randomSecondsCallDelay = parseInt((Math.random() * 5), 10)
+  setTimeout(() => {
+    resolve('konRandomDelayedPromise3Resolve: status 200 yo')
+  }, randomSecondsCallDelay * 1000)
+})
+
+// const konRandomDelayedPromise4Reject = new Promise((resolve, reject) => {
+//   const randomSecondsCallDelay = parseInt((Math.random() * 5), 10)
+//   setTimeout(() => {
+//     reject('konRandomDelayedPromise4Reject: status 400 something yo')
+//   }, randomSecondsCallDelay * 1000)
+// })
+
+function callAllPromises(){
+  const promisesArray = [];
+  promisesArray.push(konRandomDelayedPromise1Resolve)
+  promisesArray.push(konRandomDelayedPromise2Resolve)
+  promisesArray.push(konRandomDelayedPromise3Resolve)
+  // promisesArray.push(konRandomDelayedPromise4Reject)
+
+  const handleAllPromises = Promise.all(promisesArray);
+  handleAllPromises.then(function(values) {
+    console.log("Promise.All");
+    console.log("All the promises are resolved", values);
+  });
+  handleAllPromises.catch(function(reason) {
+    console.log("One of the promises failed with the following reason", reason);
+  });
+}
+
+callAllPromises()
+//output
+// All the promises are resolved [ 'konRandomDelayedPromise1Resolve: status 200 yo',
+//   'konRandomDelayedPromise2Resolve: status 200 yo',
+//   'konRandomDelayedPromise3Resolve: status 200 yo' ]
+
+// NOTE: callAllPromises can be used to make multiple API calls and only resolve once all responses come in.
+// in other words this is like a parallelize function
+
+
+// 4. Promise.race
+
+// The Promise.race(iterable) method returns a promise that resolves or rejects as soon as one of
+// the promises in the iterable resolves or rejects, with the value or reason from that promise.
+
+// In other words, similar to Promise.all except for instead of waiting for all to promises to resolve or reject,
+// it will return right away once one does
+
+// -------------------------------------
+// FETCH API
+// https://flaviocopes.com/javascript-promises/
+
+// WHICH JS API USE PROMISES?
+// In addition to your own code and library code, promises are used by standard modern Web APIs such as:
+//
+// the Battery API
+// the Fetch API
+// Service Workers
