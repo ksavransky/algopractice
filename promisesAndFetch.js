@@ -266,6 +266,7 @@ callAllPromises()
 
 // -------------------------------------
 // FETCH API
+// https://flaviocopes.com/fetch-api/
 // https://flaviocopes.com/javascript-promises/
 
 // WHICH JS API USE PROMISES?
@@ -274,3 +275,94 @@ callAllPromises()
 // the Battery API
 // the Fetch API
 // Service Workers
+
+// Async API calls from browser
+
+// History:
+// Since IE5 was released in 1998, we’ve had the option to make asynchronous network calls in the browser using XMLHttpRequest (XHR).
+//
+// Quite a few years after this, GMail and other rich apps made heavy use of it, and made the approach so popular that it had to have a name: AJAX.
+//
+// Working directly with the XMLHttpRequest has always been a pain and it was almost always abstracted by some library, in particular jQuery has its own helper functions built around it:
+//
+// jQuery.ajax()
+// jQuery.get()
+// jQuery.post()
+// and so on.
+//
+// They had a huge impact on making this more accessible in particular with regards to making sure all worked on older browsers as well.
+
+
+// Now:
+// The Fetch API, has been standardized as a modern approach to asynchronous network requests,
+// and uses Promises as a building block.
+
+// Fetch has a good support across the major browsers, except IE.
+// But The polyfill https://github.com/github/fetch released by GitHub allows us to use fetch on any browser.
+
+
+// Fetch - how to use it:
+
+// Starting to use Fetch for GET requests is very simple:
+
+// fetch('./file.json')
+//   .then(data => console.log(data))
+
+// Note: you can chain 'then' -- the above, when fetch is successfully resolved, will call 'then',
+// and console log the response data,
+// as you can see 'fetch' is a promise under the hood, which is why we are using '.then'
+
+// Calling fetch() returns a promise.
+// We can then wait for the promise to resolve by passing a handler with the then() method of the promise.
+// That handler receives the return value of the fetch promise, a Response object.
+
+
+// Can also add '.catch' to fetch
+// fetch('./file.json')
+// .then(response => {
+//   //...
+// })
+// .catch(err => console.error(err))
+
+// --------------------------------------
+
+// Chaining promises and then response with Fetch API:
+
+// A fetch call response has a body, accessible using the text() or json() methods, which return a promise.
+
+// So you can do this:
+
+// fetch('./file.json')
+//   .then(response => response.json()) // returns a promise, that's why there is another then after
+//   .then(body => console.log(body))
+
+// the above means, 1. make a get call (returns get call promise), once the get call resolves,
+// call response.json() (note: .json() is a built in fetch api method), once response.json promise resolve (i.e. converts data to json),
+// call the second then and console.log the body (which is now json)
+
+// The same can be written using the ES2017 async functions (Kon: looks like 'await' has replaced 'then'):
+
+// (async () => {
+//   const response = await fetch('./file.json')
+//   const data = await response.json()
+//   console.log(data)
+// })()
+
+// ----------------------------------
+// Example of Post request with Fetch API:
+
+// const url = 'https://randomuser.me/api';
+// // The data we are going to send in our request
+// let data = {
+//     name: 'Sara'
+// }
+// // The parameters we are gonna pass to the fetch function
+// let fetchData = {
+//     method: 'POST',
+//     body: data,
+//     headers: new Headers()
+// }
+// fetch(url, fetchData)
+// .then(function() {
+//     // Handle response you get from the server
+// });
