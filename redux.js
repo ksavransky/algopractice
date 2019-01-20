@@ -1,3 +1,5 @@
+// Example
+
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { withRouter } from 'react-router'
@@ -39,7 +41,7 @@ export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Chargebee
 
 
 // -----------------------------
-// SAGAS -- probably way too much for an interview:
+// SAGAS -- probably way too much for an interview (understanding/memorizing above is good):
 
 // In actions/index.js
 
