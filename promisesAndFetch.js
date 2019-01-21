@@ -74,13 +74,33 @@ callKonRandomDelayedPromise()
 // Your promise failed: status 400 something you
 
 // -------------------------------------
-
+// Another pattern of calling promises -- returning the promise inside a function!!!
 
 function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 delay(3000).then(() => console.log('runs after 3 seconds'));
+
+// function buyCoffee() {
+//   return new Promise((resolve, reject) => {
+//     asyncronouslyGetCoffee((coffee) => {    // asyncronouslyGetCoffee - think of this like setTimeout
+//       resolve(coffee);
+//     });
+//   });
+// }
+
+// Promises have some other very interesting properties, which allow them to be chained.
+// Lets say we have other functions that return a Promise. We could do this:
+// buyCoffee()
+//   .then(() => {
+//     return drinkCoffee();
+//   })
+//   .then(() => {
+//     return doWork();
+//   })
+
+
 
 // -------------------------------------
 // Example with xhr call
@@ -366,3 +386,67 @@ callAllPromises()
 // .then(function() {
 //     // Handle response you get from the server
 // });
+
+
+// ----------------------------------
+// Async/Await
+// https://medium.com/@rafaelvidaurre/truly-understanding-async-await-491dd580500e
+
+// Some random async functions that deal with value
+// async function thingOne() { ... }
+// async function thingTwo(value) { ... }
+// async function thingThree(value) { ... }
+//
+// async function doManyThings() {
+//   var result = await thingOne();
+//   var resultTwo = await thingTwo(result);
+//   var finalResult = await thingThree(resultTwo);
+//
+//   return finalResult;
+// }
+
+// Call doManyThings()
+
+// This is how code with async/await looks like, it very close to synchronous code, and synchronous code is much easier to understand.
+//
+// So, since doManyThings() is an Asynchronous Function too, how do we await it?
+// We can’t. Not with our new syntax. We have three options:
+//
+//     1. Let the rest of our code execute and not wait for it to finish, which we might even want in many cases.
+//     2. Call it inside another Async Function wrapped with a try/catch block.
+//     or ...
+//     3. Use it as a Promise.
+
+// Option 1:
+// doManyThings();
+//
+// // Option 2:
+// (async function() {
+//   try {
+//     await doManyThings();
+//   } catch (err) {
+//     console.error(err);
+//   }
+// })();
+//
+// // Option 3:
+// doManyThings().then((result) => {
+//
+//   // Do the things that need to wait for our function
+//
+// }).catch((err) => {
+//   throw err;
+// });
+
+
+// Async/Await version
+// async function helloAsync() {
+//   return "hello";
+// }
+//
+// // Promises version
+// function helloAsync() {
+//   return new Promise(function (resolve) {
+//     resolve("hello");
+//   });
+// }

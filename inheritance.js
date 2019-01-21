@@ -244,6 +244,7 @@ Vehicle.prototype.getType = function getType () {
   return this.type;
 };
 
+// https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Inheritance
 
 function Car (name) {
   // to set name to car i.e. like super(name, 'car');
@@ -251,12 +252,21 @@ function Car (name) {
   Vehicle.call(this, name, 'car'); // first param to call function is context 'this'
 }
 
+// THIS IS KEY -- without this Vehicles methods aren't availble to the Car instance
 // Car to inherit Vehicles methods
 Car.prototype = Object.create(Vehicle.prototype);
+
+// https://hackernoon.com/inheritance-in-javascript-21d2b82ffa6f
+// can also do Car.prototype = new Vehicle() - but MDN suggests using Object.create()
+
+
 // Car to use own constructor
 Car.prototype.constructor = Car;
-// ??
+
+// ?? not sure you need to do this; maybe just good practice for information purposes for developer
 Car.parent = Vehicle.prototype;
+
+
 // override parents getName
 Car.prototype.getName = function () {
   return 'It is a car: '+ this.name;
@@ -286,6 +296,8 @@ console.log(car.getType()); // car
 // class Car extends Vehicle {
 //
 //   constructor (name) {
+        // using super - so setting name to name passed in with new Car ('betty')
+        // but type for super call is always 'car' for a Car instance
 //     super(name, 'car');
 //   }
 //
@@ -323,3 +335,135 @@ console.log(car.getType()); // car
 // let car = Vehicle.create('Tesla', 'car');
 // console.log(car.getName()); // Tesla
 // console.log(car.getType()); // car
+
+
+// ------------------------
+// https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Inheritance
+
+function Person(first, last, age, gender, interests) {
+  this.name = {
+    first,
+    last
+  };
+  this.age = age;
+  this.gender = gender;
+  this.interests = interests;
+};
+
+Person.prototype.greeting = function() {
+  console.log('Hi! I\'m ' + this.name.first + '.');
+}
+
+let p1 = new Person('bob', 'smith', 41, 'm', 'cooking')
+
+// p1
+// Person {name: {…}, age: 41, gender: "m", interests: "cooking"}
+
+p1.greeting()
+// Hi! I'm bob.
+
+function Teacher(first, last, age, gender, interests, subject) {
+  // note first argument is 'this', call takes first argument as context
+  // here 'this' will refer to the new teacher instance
+  Person.call(this, first, last, age, gender, interests);
+
+  this.subject = subject;
+}
+
+let t1 = new Teacher('Jane', 'Doe', 32, 'f', 'teaching', 'math')
+// Teacher {name: {…}, age: 32, gender: "f", interests: "teaching", subject: "math"}age: 32gender: "f"interests: "teaching"name: {first: "Jane", last: "Doe"}subject: "math"__proto__: Object
+// t1.greeting()
+// UH OH: Uncaught TypeError: t1.greeting is not a function
+
+// All is good so far, but we have a problem.
+// We have defined a new constructor, and it has a prototype property,
+// which by default just contains a reference to the constructor function itself.
+// It does not contain the methods of the Person constructor's prototype property.
+// To see this, enter Object.getOwnPropertyNames(Teacher.prototype)
+// into either the text input field or your JavaScript console.
+// Then enter it again, replacing Teacher with Person.
+// Nor does the new constructor inherit those methods.
+// To see this, compare the outputs of Person.prototype.greeting and Teacher.prototype.greeting.
+// We need to get Teacher() to inherit the methods defined on Person()'s prototype.
+//So how do we do that?
+
+Teacher.prototype = Object.create(Person.prototype);
+
+let t2 = new Teacher('Mike', 'Henderson', 25, 'm', 'skydiving', 'english')
+t2.greeting()
+// Hi! I'm Mike.
+
+
+// DEALINER WITH SETTING CONSTRUCTOR BACK
+// NOT SURE WE NEED TO DO THIS -- not part of MDN article but from other articles
+
+
+// t1.constructor
+// ƒ Teacher(first, last, age, gender, interests, subject) {
+//   Person.call(this, first, last, age, gender, interests);
+//
+//   this.subject = subject;
+// }
+
+
+
+// t2.constructor
+// ƒ Person(first, last, age, gender, interests) {
+//   this.name = {
+//     first,
+//     last
+//   };
+//   this.age = age;
+//   this.gender = gender;
+//   this.interests = interests;
+
+Teacher.prototype.constructor = Teacher;
+
+
+let t3 = new Teacher('William', 'Wallance', 65, 'm', 'war', 'science')
+// STILL WORKS
+t3.greeting()
+// Hi! I'm William.
+
+// BUT NOW:
+// t3.constructor
+// Teacher(first, last, age, gender, interests, subject) {
+//   Person.call(this, first, last, age, gender, interests);
+//
+//   this.subject = subject;
+// }
+
+
+
+// ES6
+
+class Person {
+  constructor(first, last, age, gender, interests) {
+    this.name = {
+      first,
+      last
+    };
+    this.age = age;
+    this.gender = gender;
+    this.interests = interests;
+  }
+
+  greeting() {
+    console.log(`Hi! I'm ${this.name.first}`);
+  };
+
+  farewell() {
+    console.log(`${this.name.first} has left the building. Bye for now!`);
+  };
+}
+
+
+class Teacher extends Person {
+  constructor(first, last, age, gender, interests, subject, grade) {
+    super(first, last, age, gender, interests);
+
+    // subject and grade are specific to Teacher
+    this.subject = subject;
+    this.grade = grade;
+  }
+}
