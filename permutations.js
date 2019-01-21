@@ -13,7 +13,7 @@ function swap (inputArray, index1, index2) {
 }
 
 function permute (inputArray, startIndex, endIndex) {
-  // console.log('in top of permute, inputArray:', inputArray)
+  console.log('in top of permute, inputArray:', inputArray)
   // console.log('in top of permute, startIndex:', startIndex)
   // console.log('in top of permute, endIndex:', endIndex)
   if (startIndex === endIndex) {
@@ -42,7 +42,7 @@ function permute (inputArray, startIndex, endIndex) {
   }
 }
 
-let inputArray = [1, 2, 3];
+let inputArray = [1, 2, 3, 4];
 permute(inputArray, 0, inputArray.length - 1);
  // ABC, ACB, BAC, BCA, CBA, CAB
 
