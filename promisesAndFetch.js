@@ -257,6 +257,7 @@ function callAllPromises(){
   // promisesArray.push(konRandomDelayedPromise4Reject)
 
   const handleAllPromises = Promise.all(promisesArray);
+  
   handleAllPromises.then(function(values) {
     console.log("Promise.All");
     console.log("All the promises are resolved", values);
@@ -390,6 +391,39 @@ callAllPromises()
 
 // ----------------------------------
 // Async/Await
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
+
+function resolveAfter2Seconds() {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve('resolved resolveAfter2Seconds!!!');
+    }, 2000);
+  });
+}
+
+async function asyncCall() {
+  console.log('calling resolveAfter2Seconds');
+  var result = await resolveAfter2Seconds();
+  console.log(result); // expected output: 'resolved'
+}
+
+asyncCall();
+
+// Same as old way without async/await:
+
+// function resolveAfter2SecondsOLDSCHOOL() {
+//   console.log('calling resolveAfter2SecondsOLDSCHOOL promise');
+//   return new Promise(resolve => {
+//     setTimeout(() => {
+//       resolve('resolved resolveAfter2SecondsOLDSCHOOL!!!');
+//     }, 2000);
+//   });
+// }
+//
+// resolveAfter2SecondsOLDSCHOOL().then((value) => console.log(value))
+
+
+
 // https://medium.com/@rafaelvidaurre/truly-understanding-async-await-491dd580500e
 
 // Some random async functions that deal with value
