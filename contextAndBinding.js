@@ -32,8 +32,11 @@ var stoleSecretIdentity = hero.getSecretIdentity.bind(hero);
 
 // The output will be 1, even though the value of x is never set in the inner function. Here’s why:
 //
-// As explained in our JavaScript Hiring Guide, a closure is a function, along with all variables or functions that were in-scope at the time that the closure was created. In JavaScript, a closure is implemented as an “inner function”; i.e., a function defined within the body of another function. An important feature of closures is that an inner function still has access to the outer function’s variables.
-//
+// As explained in our JavaScript Hiring Guide, a closure is a function,
+// along with all variables or functions that were in-scope at the time that the closure was created.
+// In JavaScript,  a closure is implemented as an “inner function”;
+// i.e., a function defined within the body of another function.
+// An important feature of closures is that an inner function STILL HAS ACCESS TO OUTER FUNCTION'S VARIABLES.
 // Therefore, in this example, since x is not defined in the inner function, the scope of the outer function is searched for a defined variable x, which is found to have a value of 1.
 
 
@@ -82,8 +85,8 @@ var myObj = {
 
     render: function () {
         var that = this; // this refers to myObj
-        this.getAsyncData(function () {
-            // 'this' refers to global
+        this.getAsyncData(function () {   // could use fat arrow here instead of that-this dance
+            // in here -- 'this' refers to global
             // this.specialFunction() // throws an error
             // 'that' is passed down and refers to myObj
             that.specialFunction();
@@ -105,13 +108,13 @@ function fn() {
 
 var obj = {
   length: 5,
-  method: function(fn) {
+  method: function(fn) { // reason we have 10 output is fn is passed in with param and fn this is already bound to global
     fn();
     arguments[0](); // arguments is calling fn -- so this is arguments, and this.length is length of arguments
   }
 };
 
-// obj.method(fn, 1);
+obj.method(fn, 1);
 
 // Output:
 

@@ -77,9 +77,10 @@ var b = 1;
 function outer(){
    	var b = 2
     function inner(){
-        b++;
-        var b = 3;
-        console.log(b)
+        console.log('b in inner BEFORE var b = 3:', b) // undefined
+        b++; // NaN (++ on an undefined makes a NaN)
+        var b = 3; // NOTE: this being below b kills the b from the outer scope, makes b undefined
+        console.log('b in inner AFTER var b = 3:', b) // 3
     }
     inner();
 }
@@ -105,7 +106,7 @@ var x = 21;
 var girl = function () {
     console.log(x);
 };
-girl (); // 21
+// girl (); // 21
 
 
 var x = 21;
@@ -113,7 +114,7 @@ var girl = function () {
     console.log(x);
     var x = 20;
 };
-girl (); // undefined
+// girl (); // undefined
 
 // Neither 21, nor 20, the result is undefined
 //
@@ -126,13 +127,14 @@ girl (); // undefined
 // ---------------------------------------------------
 (function () {
     try {
-        throw new Error(); // so catch is executed because we threw an error
+        throw new Error('hiiiii'); // so catch is executed because we threw an error
     } catch (x) { // pass in error as x
+        // console.log(x); // Error: hiiiiii
         var x = 1, y = 2;  // redefine x as 1
         console.log(x); // 1
     }
     console.log(x); // undefined, no x in outer or global scope because x is declared in the catch block and passed into it
-    console.log(y); // 2, var y got hoisted to outer scope because unlike x it is only declared once in the catch block
+    console.log(y); // 2, var y got hoisted to outer scope because unlike x it is only declared once in the catch block (x declared as parameter passed in form catch as x, and in the block of catch)
 })();
 
 // 1
