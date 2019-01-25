@@ -114,7 +114,7 @@ var obj = {
   }
 };
 
-obj.method(fn, 1);
+// obj.method(fn, 1);
 
 // Output:
 
@@ -246,7 +246,7 @@ let boundHi = sayHi.bind({
 console.log( 'boundHi.test', boundHi.test ); // what will be the output? why?
 // The answer: undefined.
 //
-// The result of bind is another object. It does not have the test property.
+// The result of bind is ANOTHER OBJECT. It does not have the test property.
 
 // ------------------------------------------------
 
