@@ -105,6 +105,90 @@ let mickey = mouseFactory();
 console.log(animal)
 console.log(mickey.describe())
 
+// ----------
+// https://medium.com/@jonathanvox01/understanding-the-difference-between-object-create-and-the-new-operator-b2a2f4749358
+// Object.create v. new Blah()
+
+
+// The object used in Object.create actually forms the prototype of the new object,
+// where as in the new Function() form the declared properties/functions do not form the prototype.
+
+var dog = {
+    eat: function() {
+        console.log(this.eatFood)
+    }
+};
+
+// var maddie = Object.create(dog);
+// console.log(dog.isPrototypeOf(maddie)); //true
+// maddie.eatFood = 'NomNomNom';
+// maddie.eat(); //NomNomNom
+//
+// Let’s go step by step through the above example and see what exactly is happening:
+//
+// Create an object literal named dog which has a single method called eat.
+// Initialize maddie using Object.create(dog), which creates a completely new object with its prototype set to dog.
+// Test to see if dog is a prototype of maddie.
+// Set the string to be output via this.eatFood
+// Call the eat function with the newly created object, maddie.
+// Javascript will go through the prototype chain and find the eat method on dog with the “this” keyword set to maddie.
+// Outputs NomNomNom in console.
+
+
+// Object.create() created an entirely new object maddie, with its prototype set to dog. The freshly created maddie object now has access to the eat method in dog.
+
+
+// Now, let’s check out the new operator:
+//
+// var Dog = function(){
+//     this.eatFood = 'NomNomNom';
+//     this.eat = function(){
+//         console.log(this.eatFood)
+//     }
+// };
+//
+// var maddie = new(Dog);
+// console.log(maddie instanceof Dog); // True
+// maddie.eat(); //NomNomNom
+// Let’s see how the new operator is applied to this function and what it does.
+//
+// Create a new object named maddie
+// maddie inherits the prototype of the constructor function
+// Executes constructor with “this” set to object created in step one.
+// returns created object (unless constructor returns the object)
+
+
+// You may be thinking, what’s the difference between Object.create() and the new operator?
+// They both seem to do the same thing. They both create a new object and inherit a prototype.
+
+
+// Hopefully this example can clear up any confusion:
+//
+// function Dog(){
+//     this.pupper = 'Pupper';
+// };
+//
+// Dog.prototype.pupperino = 'Pups.';
+// var maddie = new Dog();
+// var buddy = Object.create(Dog.prototype);
+//
+// //Using Object.create()
+// console.log(buddy.pupper); //Output is undefined     UNDEFINED HERE IS DIFFERENCE -- using Object.create() we don't get the properties only the prototypes
+// console.log(buddy.pupperino); //Output is Pups.
+//
+// //Using New Keyword
+// console.log(maddie.pupper); //Output is Pupper
+// console.log(maddie.pupperino); //Output is Pups.
+// The key thing to note in this example is:
+//
+// console.log(buddy.pupper); //Output is undefined
+
+
+// Notice the output of buddy.pupper is undefined.
+// Even though Object.create() sets its prototype to Dog,
+// buddy does not have access to this.pupper in the constructor.
+// This is due to the important difference that new Dog actually runs constructor code,
+// whereas Object.create will not execute the constructor code.
 
 // ------------------------------------------------
 

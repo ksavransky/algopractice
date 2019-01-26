@@ -105,15 +105,17 @@ delay(3000).then(() => console.log('runs after 3 seconds'));
 // -------------------------------------
 // Example with xhr call
 // E.g.
-// function myAsyncFunction(url) {
-//   return new Promise((resolve, reject) => {
-//     const xhr = new XMLHttpRequest();
-//     xhr.open("GET", url);
-//     xhr.onload = () => resolve(xhr.responseText);
-//     xhr.onerror = () => reject(xhr.statusText);
-//     xhr.send();
-//   });
-// }
+function myAsyncFunction(url) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", url);
+    xhr.onload = () => resolve(xhr.responseText);
+    xhr.onerror = () => reject(xhr.statusText);
+    xhr.send();
+  });
+}
+// myAsyncFunction(url).then((value) => console.log(value)).catch((error) => console.log(error))
+
 
 // -------------------------------------
 // https://hackernoon.com/understanding-promises-in-javascript-13d99df067c1
@@ -257,7 +259,7 @@ function callAllPromises(){
   // promisesArray.push(konRandomDelayedPromise4Reject)
 
   const handleAllPromises = Promise.all(promisesArray);
-  
+
   handleAllPromises.then(function(values) {
     console.log("Promise.All");
     console.log("All the promises are resolved", values);
