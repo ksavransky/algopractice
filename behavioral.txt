@@ -1,29 +1,63 @@
-Interpersonal conflict story 1
+Interpersonal conflict story
 
-* Conflict with Quinn when I started at Swoop.
-* First major project was to refactor somewhat complex multi select component to add complexity based on product spec
-* Looked at code. Difficult to read. Had things like a null meaning all boxes checked.
-* Talked to Q about it. He said I could try refactoring. So I did it.
-* Rewrote code and raised PR.
-* Q wrote ‘Yuck, what is this’ on PR about my refactored
-* I got angry about the comment because I thought it wasn’t professional and I thought my refactor was cleaner.
-* I wanted to be transparent about the issue with Q. So I asked to have a private meeting with him and asked that we try to be respectful and professional in our PR reviews. That we can discuss tech disagreements but we should not use derogatory terms about each others work. He apologized and I could tell he was embarrassed. It never happened again.
-* I also raised the issue to our manager after in private just to be transparent. He said I handled the situation well and to let him know if there were other issues.
-* As for the technical disagreement, we discussed the code some more and eventually Q agreed that my explicit code was more readable. But I learned that what Q was trying to do was optimize more for performance, which made his code a bit less readable for the component. We worked together to try to find a balance between the 2 approaches and were successful in doing so.
+- Conflict with Quinn when I started at Swoop.
+- First major project was to refactor somewhat complex multi select component to add complexity based on product spec
+- Looked at code. Difficult to read. Had things like a null meaning all boxes checked.
+- Talked to Q about it. He said I could try refactoring. So I did it.
+- Rewrote code and raised PR.
+- Q wrote ‘Yuck, what is this’ on PR about my refactored
+- I got upset about the comment because I thought it wasn’t professional and I really thought my code was good.
+- I wanted to be transparent about the issue with Q. So I asked to have a private meeting with him and asked that we try to be respectful and professional in our PR reviews.
+- That we can discuss tech disagreements but we should not use derogatory terms about each others work. He apologized and I could tell he was embarrassed. It never happened again.
+- I also raised the issue to our manager after in private just to be transparent. He said I handled the situation well and to let him know if there were other issues.
+- As for the technical disagreement, we discussed the code some more and eventually Q agreed that my explicit code was more readable. But I learned that what Q was trying to do was optimize more for performance, which made his code a bit less readable for the component.
+- We worked together to try to find a balance between the 2 approaches and were successful in doing so.
 
-HR mess up
-*     Swoop
-* I was working on a complicated new functionality on a hard deadline related to checking for insurance coverage for Lincoln
-* At the same time, the CTO asked that we all hit 80% code coverage on all FE unit tests (for each PR)
-* Agile process so lots of changes to code, meaning I’d have to re-write unit tests with every change to specs or BE changes to API
-* Basically doubled my work load for each PR and I thought it was inefficient — worried about hitting my deadline
-* Started being vocal in open office setting to teammates about how much I hated the new req. They also didn’t like it and some of them vocalized dislike too.
-* My complaining was bringing down moral but I didn’t notice
-* Our HR person pulled me aside to discuss the issue
-* I felt embarrased
-* Then Matt...
+My HR mess up
+
+- Swoop
+- I was working on a complicated new functionality on a hard deadline related to checking for insurance coverage for Lincoln
+- At the same time, the CTO asked that we all hit 80% code coverage on all FE unit tests (for each PR)
+- Agile process so lots of changes to code, meaning I’d have to re-write unit tests with every change to specs or BE changes to API
+- Basically doubled my work load for each PR and I thought it was inefficient — worried about hitting my deadline
+- Started being vocal in open office setting to teammates about how much I hated the new req. They also didn’t like it and some of them vocalized dislike too.
+- My complaining was bringing down moral but I didn’t notice
+- My manager pulled me aside to discuss the issue
+- I felt embarrassed. I didn't realize I was being so vocal. But I realized he was right. I stopped doing that immediately.
+- I also talked to P about percent coverage and negotiated it down a bit. However, the tests did help to uncover a couple of bugs, so I started to appreciate the importance of unit testing more.
+- Funny thing is a couple weeks after that incident, a dev on my team was being vocal about a previously poorly written piece of code he was working in.
+- The dev who wrote it was no longer at the company, but the complaining was kind of a downer,
+- so I talked to M and said I understood his frustration but we should just ask for tech help instead of being vocal about our frustrations. He seemed to understand.
+
+Tech project that went well #1
+- Brightplan
+- me creating React Typeform library
+- long forms investment
+- users dropping off
+- looked outdated and ux felt bad -- many pages with Qs
+- I made React Typeform lib
+- POC, 2-3 weeks, Google Analytics tracking showed more users completing the flows
+
+Tech project that went well #2
+- Brightplan
+- Gut CSS BootStrap3 - floats - extra divs etc... - no className organization, no mixins for font size color etc.
+- Me Foundation - css grid via flexbox and flexbox; nesting, naming, global css vars, mixins, tighter html thanks to css grid and flexbox
+- noticeably reduced ui errors by a lot - much less bugs -- easier for devs to write css and have it work and be standardized across app
+
+Tech failure story #1
+delegation/ explaining what i'm working on to rest of team / clear function names / time to refactored
+- worked on Google Map api - got it to work but didn't have time to create clear docs
+and didn't have time to explain to Matt -- function names weren't clear
+- then pulled into another big project (Lincoln launch with coverage)
+- then needed team needed to make more upgrades to Map
+- Because i didn't take time to refactor and have clear function names and shorten the functions,
+- Matt had trouble
+- then i had to come back in and help and barely made my deadline -- and didn't get all functionality in on both
+- important to take time to do things right - manage own timelines with product - set expectations correctly
+- take time to refactor and name component apis clearly
 
 
-
-
-Tech failure story
+Tech failure story #2 maybe:
+Creating Leads in Salesforce through Segment ??? Spent lots of time on trial and error.
+Poor doc on Salesforce. Wouldn't respond.  Wasted a lot of time. Only got it partially working.
+- learning need to time box things
