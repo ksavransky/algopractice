@@ -1,8 +1,8 @@
-Interpersonal conflict story
+Interpersonal Conflict Story
 
 - Conflict with Quinn when I started at Swoop.
 - First major project was to refactor somewhat complex multi select component to add complexity based on product spec
-- Looked at code. Difficult to read. Had things like a null meaning all boxes checked.
+- Looked at code. Difficult to read. Had things like a null meaning 'all' boxes checked.
 - Talked to Q about it. He said I could try refactoring. So I did it.
 - Rewrote code and raised PR.
 - Q wrote ‘Yuck, what is this’ on PR about my refactored
@@ -10,8 +10,12 @@ Interpersonal conflict story
 - I wanted to be transparent about the issue with Q. So I asked to have a private meeting with him and asked that we try to be respectful and professional in our PR reviews.
 - That we can discuss tech disagreements but we should not use derogatory terms about each others work. He apologized and I could tell he was embarrassed. It never happened again.
 - I also raised the issue to our manager after in private just to be transparent. He said I handled the situation well and to let him know if there were other issues.
-- As for the technical disagreement, we discussed the code some more and eventually Q agreed that my explicit code was more readable. But I learned that what Q was trying to do was optimize more for performance, which made his code a bit less readable for the component.
+- As for the technical disagreement, we discussed the code some more and eventually Q agreed that my explicit code was more readable.
+- But I learned that what Q was trying to do was optimize more for performance, which made his code a bit less readable for the component.
 - We worked together to try to find a balance between the 2 approaches and were successful in doing so.
+- This was first time I raised issue with him. We had differences of opinion since,
+- but we have been able to be professional about them and have made good progress on a plan and refactoring the codebase.
+- I understand it is his baby so I had to be sensitive the fact he developed it, but wanting what’s best for company.
 
 My HR mess up
 
@@ -20,14 +24,16 @@ My HR mess up
 - At the same time, the CTO asked that we all hit 80% code coverage on all FE unit tests (for each PR)
 - Agile process so lots of changes to code, meaning I’d have to re-write unit tests with every change to specs or BE changes to API
 - Basically doubled my work load for each PR and I thought it was inefficient — worried about hitting my deadline
-- Started being vocal in open office setting to teammates about how much I hated the new req. They also didn’t like it and some of them vocalized dislike too.
-- My complaining was bringing down moral but I didn’t notice
-- My manager pulled me aside to discuss the issue
+- Started being vocal in open office setting to teammates about the new req. They also didn’t like it and some of them vocalized dislike too.
+- My complaining was bringing down moral but I didn’t notice.
+- My manager pulled me aside to discuss the issue.
 - I felt embarrassed. I didn't realize I was being so vocal. But I realized he was right. I stopped doing that immediately.
 - I also talked to P about percent coverage and negotiated it down a bit. However, the tests did help to uncover a couple of bugs, so I started to appreciate the importance of unit testing more.
 - Funny thing is a couple weeks after that incident, a dev on my team was being vocal about a previously poorly written piece of code he was working in.
 - The dev who wrote it was no longer at the company, but the complaining was kind of a downer,
-- so I talked to M and said I understood his frustration but we should just ask for tech help instead of being vocal about our frustrations. He seemed to understand.
+- So I talked to M and said I understood his frustration but we should just ask for tech help instead of being vocal about our frustrations. He seemed to understand.
+- I learned that sometimes you need to step back when you are frustrated and think about the big picture.
+- People may have experience from prior experiences that you don’t and you should try to learn from that even if it is immediately impacting your workload!
 
 Tech project that went well #1
 - Brightplan
