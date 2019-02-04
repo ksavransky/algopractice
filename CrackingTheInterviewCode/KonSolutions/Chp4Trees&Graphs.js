@@ -748,3 +748,66 @@ function getAllCombos(array) {
 // [2,3,1]
 // [3,1,2]
 // [3,2,1]
+
+
+
+// Check Subtree: Tl and T2 are two very large binary trees, with Tl much bigger than T2. Create an
+// algorithm to determine if T2 is a subtree of Tl.
+// A tree T2 is a subtree of Tl if there exists a node n in Tl such that the subtree of n is identical to T2.
+// That is, if you cut off the tree at node n, the two trees would be identical.
+
+// Kon idea: really if root node of subtree is in tree? can do BFS or DFS?
+// OR is this problem more that they are identical but a copy? probably this... hmmm...
+// well still need to find a root node with same value and then same
+// create a function to check if all children nodes are the same for both trees from that point?
+// so find node in tree with value of subtree, then start running side by side BFS or DFS and
+// if a node value doesn't match false (keep going in original search), if all match then true
+
+function areTreesEqual(currentTreeNode, subTreeRoot) {
+  let isEqual = true
+
+  const treeQueue = [currentTreeNode]
+  const subTreeQueue = [subTreeRoot]
+  while (treeQueue.length > 0 && subTreeQueue.length > 0 && isEqual) {
+    const currentTreeNode = treeQueue.shift()
+    const currentSubTreeNode = subTreeQueue.shift()
+    if (currentTreeNode.value !== currentSubTreeNode.value) {
+      isEqual = false
+    }
+    if (currentTreeNode.leftChild && currentSubTreeNode.leftChild){
+      treeQueue.push(currentTreeNode.leftChild)
+      currentSubTreeNode.push(currentSubTreeNode.leftChild)
+    } else {
+      isEqual = false
+    }
+    if (currentTreeNode.rightChild && currentSubTreeNode.rightChild){
+      treeQueue.push(currentTreeNode.rightChild)
+      currentSubTreeNode.push(currentSubTreeNode.rightChild)
+    } else {
+      isEqual = false
+    }
+  }
+  return isEqual ? subTree : null
+}
+
+function checkSubTreeKon(tree, subTree) {
+  if (!tree.root || !subTree.root) {
+    return 'check yo trees'
+  }
+  const queue = [tree.root]
+  let matchingSubtree = null
+
+  while (queue.length > 0 && !matchingSubtree) {
+    const currentNode = queue.shift()
+    if (currentNode.value === subTree.root.value){
+      matchingSubtree = areTreesEqual(currentNode, subTree.root)
+    }
+    if (currentNode.leftChild){
+      queue.push(currentNode.leftChild)
+    }
+    if (currentNode.rightChild){
+      queue.push(currentNode.rightChild)
+    }
+  }
+  return matchingSubtree
+}
