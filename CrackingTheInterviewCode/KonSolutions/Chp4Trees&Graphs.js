@@ -313,6 +313,7 @@ bst1.insertNode(tn1)
 // bst1.insertNode(new TreeNode(13))
 // bst1.insertNode(new TreeNode(14))
 
+
 //         5
 //     2       6
 //  1     3       9
@@ -687,60 +688,59 @@ bstSequenceTree.insertNode(new TreeNode(11))
 // My idea: I think we need to first do a BFS and mark the depth of each node to that into an array
 // and take every combo of that depth level; see outputs I made above to understand
 
-function getDepthArrays(root) {
-  const queue = [root]
-  const result = {}
-
-  while(queue.length > 0){
-    const currentNode = queue.shift()
-    if (!result[currentNode.depth]){
-      result[currentNode.depth] = []
-    }
-    result[currentNode.depth].push(currentNode.value)
-    if(currentNode.leftChild){
-      queue.push(currentNode.leftChild)
-    }
-    if(currentNode.rightChild){
-      queue.push(currentNode.rightChild)
-    }
-  }
-  return result
-}
-
-function markDepths(node, depth = 0){
-  node.depth = depth
-  if (node.leftChild){
-    markDepths(node.leftChild, depth + 1)
-  }
-  if (node.rightChild){
-    markDepths(node.rightChild, depth + 1)
-  }
-}
-
-createDifferentInputArray(depthArrays){
-  const resultArrays = []
-
-}
-
-function bstSequence(tree){
-  if (!tree.root){
-    return 'no root node'
-  }
-  markDepths(tree.root)
-  const depthArrays = getDepthArrays(tree.root)
-  // { '0': [ 7 ], '1': [ 4, 10 ], '2': [ 2, 5, 9, 11 ] }
-  return createDifferentInputArray(depthArrays)
-}
+// function getDepthArrays(root) {
+//   const queue = [root]
+//   const result = {}
+//
+//   while(queue.length > 0){
+//     const currentNode = queue.shift()
+//     if (!result[currentNode.depth]){
+//       result[currentNode.depth] = []
+//     }
+//     result[currentNode.depth].push(currentNode.value)
+//     if(currentNode.leftChild){
+//       queue.push(currentNode.leftChild)
+//     }
+//     if(currentNode.rightChild){
+//       queue.push(currentNode.rightChild)
+//     }
+//   }
+//   return result
+// }
+//
+// function markDepths(node, depth = 0){
+//   node.depth = depth
+//   if (node.leftChild){
+//     markDepths(node.leftChild, depth + 1)
+//   }
+//   if (node.rightChild){
+//     markDepths(node.rightChild, depth + 1)
+//   }
+// }
+//
+// createDifferentInputArray(depthArrays) {
+//   const resultArrays = []
+// }
+//
+// function bstSequence(tree){
+//   if (!tree.root){
+//     return 'no root node'
+//   }
+//   markDepths(tree.root)
+//   const depthArrays = getDepthArrays(tree.root)
+//   // { '0': [ 7 ], '1': [ 4, 10 ], '2': [ 2, 5, 9, 11 ] }
+//   return createDifferentInputArray(depthArrays)
+// }
 
 // console.log(bstSequence(bstSequenceTree))
 
-function getAllCombos(array) {
-  const combos = []
-  array.forEach((el, index) => {
-    const subArray = []
-
-  })
-}
+// function getAllCombos(array) {
+//   const combos = []
+//   array.forEach((el, index) => {
+//     const subArray = []
+//
+//   })
+// }
 
 // [1,2,3]
 // [1,3,2]
@@ -764,30 +764,28 @@ function getAllCombos(array) {
 // if a node value doesn't match false (keep going in original search), if all match then true
 
 function areTreesEqual(currentTreeNode, subTreeRoot) {
-  let isEqual = true
-
   const treeQueue = [currentTreeNode]
   const subTreeQueue = [subTreeRoot]
-  while (treeQueue.length > 0 && subTreeQueue.length > 0 && isEqual) {
+  while (treeQueue.length > 0 && subTreeQueue.length > 0) {
     const currentTreeNode = treeQueue.shift()
     const currentSubTreeNode = subTreeQueue.shift()
     if (currentTreeNode.value !== currentSubTreeNode.value) {
-      isEqual = false
+      return null
     }
     if (currentTreeNode.leftChild && currentSubTreeNode.leftChild){
       treeQueue.push(currentTreeNode.leftChild)
-      currentSubTreeNode.push(currentSubTreeNode.leftChild)
-    } else {
-      isEqual = false
+      subTreeQueue.push(currentSubTreeNode.leftChild)
+    } else if ((currentTreeNode.leftChild && !currentSubTreeNode.leftChild) || (!currentTreeNode.leftChild && currentSubTreeNode.leftChild)) {
+      return null
     }
     if (currentTreeNode.rightChild && currentSubTreeNode.rightChild){
       treeQueue.push(currentTreeNode.rightChild)
-      currentSubTreeNode.push(currentSubTreeNode.rightChild)
-    } else {
-      isEqual = false
+      subTreeQueue.push(currentSubTreeNode.rightChild)
+    } else if ((currentTreeNode.rightChild && !currentSubTreeNode.rightChild) || (!currentTreeNode.rightChild && currentSubTreeNode.rightChild)) {
+      return null
     }
   }
-  return isEqual ? subTree : null
+  return subTreeRoot
 }
 
 function checkSubTreeKon(tree, subTree) {
@@ -810,4 +808,50 @@ function checkSubTreeKon(tree, subTree) {
     }
   }
   return matchingSubtree
+}
+
+// e.g.
+//         7
+//    4         10
+// 2     5   9     11
+
+
+const bstTree1 = new BinarySearchTree()
+bstTree1.insertNode(new TreeNode(7))
+bstTree1.insertNode(new TreeNode(4))
+bstTree1.insertNode(new TreeNode(10))
+bstTree1.insertNode(new TreeNode(2))
+bstTree1.insertNode(new TreeNode(5))
+bstTree1.insertNode(new TreeNode(9))
+bstTree1.insertNode(new TreeNode(11))
+
+const bstTree2 = new BinarySearchTree()
+bstTree2.insertNode(new TreeNode(10))
+bstTree2.insertNode(new TreeNode(9))
+bstTree2.insertNode(new TreeNode(11))
+// bstTree2.insertNode(new TreeNode(13))
+
+// working!!!
+// console.log(checkSubTreeKon(bstTree1, bstTree2))
+
+
+
+
+// Random Node: You are implementing a binary tree class from scratch which, in addition to insert, find, and delete,
+// has a method getRandomNode() which returns a random node from the tree.
+// All nodes should be equally likely to be chosen. Design and implement an algorithm for getRandomNode,
+// and explain how you would implement the rest of the methods.
+
+class NewTreeNode {
+  constructor(value){
+    this.value = value
+    this.leftChild = null
+    this.rightChild = null
+  }
+}
+
+class NewBST {
+  constructor(rootNode){
+    this.rootNode = rootNode || null
+  }
 }
