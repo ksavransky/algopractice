@@ -852,6 +852,73 @@ class NewTreeNode {
 
 class NewBST {
   constructor(rootNode){
-    this.rootNode = rootNode || null
+    this.root = rootNode || null
+  }
+
+  insert(value, currentNode = this.root){
+    if (!currentNode){
+      currentNode = new NewTreeNode(value)
+    } else {
+      if (value < currentNode.value) {
+        if (currentNode.leftChild) {
+          this.insert(value, currentNode.leftChild)
+        } else {
+          currentNode.leftChild = new NewTreeNode(value)
+        }
+      } else {
+        if (currentNode.rightChild) {
+          this.insert(value, currentNode.rightChild)
+        } else {
+          currentNode.rightChild = new NewTreeNode(value)
+        }
+      }
+    }
+  }
+
+  find(value, currentNode = this.root){
+    if (!currentNode){
+      return null
+    }
+    if (currentNode.value === value) {
+      return currentNode
+    } else if (value < currentNode.value) {
+      if (currentNode.leftChild) {
+        this.find(value, currentNode.leftChild)
+      } else {
+        return null
+      }
+    } else {
+      if (currentNode.rightChild) {
+        this.find(value, currentNode.rightChild)
+      } else {
+        return null
+      }
+    }
+  }
+
+  delete(value){
+    const nodeToDelete = this.find(value)
+    if (!nodeToDelete) {
+      return "No node with that value to delete"
+    }
+    if (!nodeToDelete.leftChild && !nodeToDelete.rightChild) {
+      nodeToDelete = null
+    }
+    return this.root
+  }
+
+  getAllNodes(){
+    // do a BFS result
+  }
+
+  getRandomNode(){
+
   }
 }
+
+const newBST1 = new NewBST(10)
+newBST1.insert(5)
+newBST1.insert(15)
+console.log('here1', newBST1)
+newBST1.delete(5)
+console.log('here2', newBST1)
