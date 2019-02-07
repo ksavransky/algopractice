@@ -851,8 +851,8 @@ class NewTreeNode {
 }
 
 class NewBST {
-  constructor(rootNode){
-    this.root = rootNode || null
+  constructor(value){
+    this.root = new NewTreeNode(value) || null
   }
 
   insert(value, currentNode = this.root){
@@ -883,13 +883,15 @@ class NewBST {
       return currentNode
     } else if (value < currentNode.value) {
       if (currentNode.leftChild) {
-        this.find(value, currentNode.leftChild)
+        currentNode.leftChild.parent = currentNode
+        return this.find(value, currentNode.leftChild)
       } else {
         return null
       }
     } else {
       if (currentNode.rightChild) {
-        this.find(value, currentNode.rightChild)
+        currentNode.rightChild.parent = currentNode
+        return this.find(value, currentNode.rightChild)
       } else {
         return null
       }
@@ -902,7 +904,21 @@ class NewBST {
       return "No node with that value to delete"
     }
     if (!nodeToDelete.leftChild && !nodeToDelete.rightChild) {
-      nodeToDelete = null
+      if (nodeToDelete.parent.leftChild === nodeToDelete) {
+        nodeToDelete.parent.leftChild = null
+      }
+      if (nodeToDelete.parent.rightChild === nodeToDelete) {
+        nodeToDelete.parent.rightChild = null
+      }
+    } else if (nodeToDelete.leftChild && !nodeToDelete.rightChild) {
+      if (nodeToDelete.parent.leftChild === nodeToDelete) {
+        nodeToDelete.parent.leftChild = nodeToDelete.leftChild
+      }
+      if (nodeToDelete.parent.rightChild === nodeToDelete) {
+        nodeToDelete.parent.rightChild = nodeToDelete.leftChild
+      }
+    } else if (!nodeToDelete.leftChild && nodeToDelete.rightChild) {
+
     }
     return this.root
   }
