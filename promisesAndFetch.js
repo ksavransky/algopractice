@@ -493,6 +493,8 @@ asyncCall();
 class MyPromise{
   constructor(asyncFn) {
     this.asyncFn = asyncFn
+    this.successHandler = null
+    this.errHandler = null
     this.resolve = () => typeof this.successHandler === 'function' ? this.successHandler() : null
     this.reject = () => typeof this.successHandler === 'function' ? this.errHandler() : null
     this.asyncFn(this.resolve, this.reject)
