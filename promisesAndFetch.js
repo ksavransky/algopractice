@@ -486,3 +486,33 @@ asyncCall();
 //     resolve("hello");
 //   });
 // }
+
+// ---------
+
+
+class MyPromise{
+  constructor(asyncFn) {
+    this.asyncFn = asyncFn
+    this.resolve = () => typeof this.successHandler === 'function' ? this.successHandler() : null
+    this.reject = () => typeof this.successHandler === 'function' ? this.errHandler() : null
+    this.asyncFn(this.resolve, this.reject)
+  }
+
+  then(successHandler, errHandler) {
+    this.successHandler = successHandler;
+    this.errHandler = errHandler;
+    return new MyPromise(this.asyncFn)
+  }
+}
+
+(new MyPromise(
+  // note this below is an async function because of the setTimeout
+  (resolve, reject) => {
+    setTimeout(()=> resolve(),1000)
+  })
+).then(
+  (msg) => console.log("MyPromise Success"),
+  (err) => console.log("MyPromise Errror")
+).then(
+  (msg) => console.log("MyPromise Success2"),
+  (err) => console.log("MyPromise Errror2"));
