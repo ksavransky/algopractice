@@ -1,0 +1,83 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nigiri {
+  margin: 0 10px;  /* fixed 10px margin and padding... for now! */
+  padding: 0 10px;
+  float: left; /* here is the action */
+
+/*  Extra things to makit look nice  */
+  background-color: #fff;
+  border-radius: 100px;
+  box-shadow: inset -3px -6px 0 0 #ece0cd;
+}
+
+.nigiri > h1 {
+  background-color: #fca35d;
+  color: #fce2da;
+  border-radius: 100px;
+  font-weight: 100;
+}
+
+.board {
+  width: 500px;
+  height: 300px; /* we need this because floated elements don't occupy real Document Flow space, try removing it! */
+  margin: 20px auto;
+  padding: 10px;
+  background: #CBAD8C;
+  border-radius: 8px;
+  box-shadow: 12px 8px 0 rgba(#000, 0.1);
+}
+
+.soup {
+  width: 200px;
+  height: 200px;
+  border-radius: 100%;
+  background: #A6CCAF;
+  border: 6px solid white;
+}
+
+.nigiri-plate {
+  background-color: #223;
+}
+
+/* here is the action */
+.nigiri-plate:after {
+  content: "";
+  clear: both;
+  display: block;
+}
+
+.article {
+  height: 400px;
+  width: 70%;
+  border: 2px solid black;
+}
+
+.article img {
+  height: auto;
+  width: 100px;
+  padding: 20px;
+  border: 1px solid grey;
+}
+
+.article .text {
+  background: pink;
+}
+
+.article .monkey1 {
+  float: right;
+}
+
+.article .monkey2 {
+  float: left;
+}
+
+/* .article .images::after {
+  display: block;
+  clear: both;
+  content: ''
+} */
