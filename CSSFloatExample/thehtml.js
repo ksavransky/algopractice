@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import monkey from './monkey.png'
 import './App.css';
 
+// https://github.com/ksavransky/cssfloatsexample
+
 class App extends Component {
   render() {
     return (
