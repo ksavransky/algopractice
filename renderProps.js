@@ -22,7 +22,7 @@ class App extends Component {
     return (
       <div className="App">
         <TabsRenderProps
-          render={renderProps => (
+          render={renderProps => ( // WOW RENDER PROPS!
             <div>
               <TabsOnTop {...renderProps} tabInformation={DATA} />
               <TabsBody {...renderProps} />
@@ -58,7 +58,7 @@ class TabsRenderProps extends Component {
     }
     return (
       <div>
-        {this.props.render(renderProps)}
+        {this.props.render(renderProps)}  // WOW RENDER PROPS!
       </div>
     )
   }
@@ -66,7 +66,6 @@ class TabsRenderProps extends Component {
 
 class TabsBody extends Component {
   render() {
-    console.log('this.props', this.props)
     return (
       <div className="tabs-body">
         {this.props.content}

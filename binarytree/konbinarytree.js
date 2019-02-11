@@ -71,16 +71,25 @@ class BinaryTree {
           }
         }
       } else if (currentNode.leftChild && currentNode.rightChild) {
-        // deleting node that has 2 children
-        // NOTE: trick here is to get minNode of currentNode's right children
-        // and substitute it's value with rightChildMinNode value
-        // also need to check if rightChildMinNode has a right child
-        // and replace currentNode's right child with it, if it does
+        // deleting node that has 2 children (e.g. node value 5 from below)
+        // NOTE: trick here is to get minNode of currentNode's (i.e. node to delete) right children (e.g. node 6)
+        // and substitute it's value with rightChildMinNode value (e.g. 6 in place of 5)
+        // also need to check if rightChildMinNode has a right child (e.g. 7)
+        // and replace currentNode's right child with it and make current node's right child that node's right child, if it does (e.g. 6 in place of 5, and now 9 as child of 7)
         // rightChildMinNode cannot by definition have a left child because it would be smaller
+
+        // DELETE node value 5 e.g. for node with 2 children delete
+        //           10
+        //       5       15
+        //    3    9
+        // 1    6
+        //        7
         const rightChildMinNode = this.findMinNode(currentNode.rightChild)
         currentNode.value = rightChildMinNode.value
         if (rightChildMinNode.rightChild) {
+          const savedCurrentNodeRightChild = currentNode.rightChild
           currentNode.rightChild = rightChildMinNode.rightChild
+          currentNode.rightChild.rightChild = savedCurrentNodeRightChild
         }
       } else if (currentNode.leftChild && !currentNode.rightChild) {
         // if currentNode only has left child, replace the parent node's link with it

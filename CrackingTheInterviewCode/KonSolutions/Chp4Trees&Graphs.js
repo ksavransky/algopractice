@@ -898,6 +898,16 @@ class NewBST {
     }
   }
 
+  findMinNode(node){
+    const currentNode = node || this.root
+
+    if (!currentNode.leftChild){
+      return currentNode
+    } else {
+      return this.findMinNode(currentNode.leftChild)
+    }
+  }
+
   delete(value){
     const nodeToDelete = this.find(value)
     if (!nodeToDelete) {
@@ -918,7 +928,33 @@ class NewBST {
         nodeToDelete.parent.rightChild = nodeToDelete.leftChild
       }
     } else if (!nodeToDelete.leftChild && nodeToDelete.rightChild) {
+      if (nodeToDelete.parent.leftChild === nodeToDelete) {
+        nodeToDelete.parent.leftChild = nodeToDelete.rightChild
+      }
+      if (nodeToDelete.parent.rightChild === nodeToDelete) {
+        nodeToDelete.parent.rightChild = nodeToDelete.rightChild
+      }
+    } else { // nodeToDelete.leftChild && nodeToDelete.rightChild
+      // deleting node that has 2 children (e.g. node value 5 from below)
+      // NOTE: trick here is to get minNode of currentNode's (i.e. node to delete) right children (e.g. node 6)
+      // and substitute it's value with rightChildMinNode value (e.g. 6 in place of 5)
+      // also need to check if rightChildMinNode has a right child (e.g. 7)
+      // and replace currentNode's right child with it and make current node's right child that node's right child, if it does (e.g. 6 in place of 5, and now 9 as child of 7)
+      // rightChildMinNode cannot by definition have a left child because it would be smaller
 
+      // DELETE node value 5 e.g. for node with 2 children delete
+      //           10
+      //       5       15
+      //    3    9
+      // 1    6
+      //        7
+      const rightChildMinNode = this.findMinNode(currentNode.rightChild)
+      currentNode.value = rightChildMinNode.value
+      if (rightChildMinNode.rightChild) {
+        const savedCurrentNodeRightChild = currentNode.rightChild
+        currentNode.rightChild = rightChildMinNode.rightChild
+        currentNode.rightChild.rightChild = savedCurrentNodeRightChild
+      }
     }
     return this.root
   }
@@ -931,6 +967,7 @@ class NewBST {
 
   }
 }
+
 
 const newBST1 = new NewBST(10)
 newBST1.insert(5)
