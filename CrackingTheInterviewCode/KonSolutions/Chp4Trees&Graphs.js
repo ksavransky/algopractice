@@ -842,6 +842,11 @@ bstTree2.insertNode(new TreeNode(11))
 // All nodes should be equally likely to be chosen. Design and implement an algorithm for getRandomNode,
 // and explain how you would implement the rest of the methods.
 
+// more elegant and log N solution at: src/chapter4/ch4-q11.js
+// basically keep track of size of tree by starting root node size at 1 and keep size in each node (of its subtree basically)
+// then choose random number up to size of root
+// then go find that number in the tree and you have yourself the random node
+
 class NewTreeNode {
   constructor(value){
     this.value = value
@@ -964,14 +969,65 @@ class NewBST {
   }
 
   getRandomNode(){
-
+    // find random node from bfs result
   }
 }
 
 
-const newBST1 = new NewBST(10)
-newBST1.insert(5)
-newBST1.insert(15)
-console.log('here1', newBST1)
-newBST1.delete(5)
-console.log('here2', newBST1)
+// Paths with Sum:
+// You are given a binary tree in which each node contains an integer value (which might be positive or NEGATIVE).
+// Design an algorithm to count the number of paths that sum to a given value.
+// The path does NOT need to start or end at the ROOT or a LEAF,
+// but it must go downwards (traveling only from parent nodes to child nodes).
+
+function treePathWithSums (tree, sumValue) {
+
+}
+
+// sample tree (with just positive for simplicity)
+//              10
+//        5             15
+//    3      9      11      17
+// 1     6             13         20
+//  2  4   7                  19
+
+// treePathWithSums (tree, 24)
+// output: [11, 13], [10. 5, 9], [10, 5, 3, 6]
+
+
+/**
+ * To find all the paths where node values add up to a given sum we need to
+ * travel all paths of the tree and basically look upwards from the current node
+ * summing up the values. Where the sum matches the requested sum then increment
+ * counter. Even if we match the requested sum or go over we still need to keep
+ * going up the path as negative values are also allowed.
+ *
+ * N = |tree|
+ * Time: O(N lg N) - assuming a balanced tree, worst case O(N^2)
+ * Additional space: O(lg N) - assuming a balanced tree, worst case O(N)
+ */
+export function findPathWithSum(tree, value) {
+  if (!tree || !tree.root) {
+    throw new Error('tree must be valid and non-empty');
+  }
+
+  return findPathWithSumRecurse([], tree.root, value);
+}
+
+function findPathWithSumRecurse(path, node, value) {
+  let count = 0;
+  if (node) {
+    path.push(node.val);
+    let sum = 0;
+    for (let i = path.length - 1; i >= 0; --i) {
+      sum += path[i];
+      if (sum === value) {
+        ++count;
+      }
+    }
+    count += findPathWithSumRecurse(path, node.left, value) +
+      findPathWithSumRecurse(path, node.right, value);
+    path.pop();
+  }
+  return count;
+}
