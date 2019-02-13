@@ -1,54 +1,38 @@
-// Given a list of people with each person’s birth year and death year,
-// find the year with the highest population
-
-// const dobList = [
-//   {
-//     born: 1,
-//     died: 2,
-//   },
-//   {
-//     born: 2,
-//     died: 3,
-//   },
-//   {
-//     born: 3,
-//     died: 4,
-//   },
-//   {
-//     born: 5,
-//     died: 6,
-//   },
-//   {
-//     born: 5,
-//     died: 7,
-//   },
-// ]
-
-// Kon idea:
-// start at smallest year someone was born, and end on last year someone died
-// go through each year in between and count how many people alive
-// keep largest as result
-// no extra space this way; time is list length x number of years in span
-
-
-function swap(array, start, end) {
-  const temp = array[start]
-  array[start] = array[end]
-  array[end] = temp
-  return array
-}
-
-function permutations(inputArray, startIndex, finishIndex) {
-  if (startIndex === finishIndex) {
-    console.log(inputArray)
-  } else {
-    for (let i = startIndex; i <= finishIndex; i++) {
-      swap(inputArray, startIndex, i)
-      permutations(inputArray, startIndex + 1, finishIndex)
-      swap(inputArray, i, startIndex)
-    }
+class LLNode {
+  constructor(value) {
+    this.value = value
+    this.next = null
+    this.prev = null
   }
 }
 
-const arr = [1,2,3]
-permutations(arr, 0, arr.length - 1)
+class DoubleLinkedList {
+  constructor(head){
+    this.head = head || null
+    this.tail = null
+  }
+
+  insert(node){
+    if (!this.head) {
+      this.head = node
+      node.prev = null
+      node.next = this.tail
+    } else if (!this.tail) {
+      this.tail = node
+      this.head.next = this.tail
+      this.tail.prev = this.head
+      this.tail.next = null
+    } else {
+      
+    }
+  }
+
+  insertInOrder(node) {
+    // write it
+  }
+}
+
+
+function reverseLinkedList(list){
+
+}
