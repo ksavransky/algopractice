@@ -5,6 +5,29 @@
 // therefore the time and space complexity of our algorithm is O(n!).
 
 
+function swap(array, i, j) {
+  const save = array[i]
+  array[i] = array[j]
+  array[j] = save
+  return array
+}
+
+function permutations(array, startIndex, endIndex) {
+  if (startIndex === endIndex) {
+    console.log(array)
+  } else {
+    for(let i = startIndex; i <= endIndex; i++){ // i <= endIndex; note: <=
+      swap(array, startIndex, i) // startIndex i swap back and forth
+      permutations(array, startIndex + 1, endIndex) // endIndex doesn't ever change; startIndex + 1
+      swap(array, i, startIndex)  // startIndex i swap back and forth
+    }
+  }
+}
+
+const input = ['A', 'B', 'C']
+console.log(permutations(input, 0, input.length - 1))
+
+
 function swap (inputArray, index1, index2) {
   var temp = inputArray[index1];
   inputArray[index1] = inputArray[index2];
