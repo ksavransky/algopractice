@@ -9,7 +9,6 @@ function swap(array, i, j) {
   const save = array[i]
   array[i] = array[j]
   array[j] = save
-  return array
 }
 
 function permutations(array, startIndex, endIndex) {
