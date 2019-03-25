@@ -73,34 +73,6 @@ let counterInstance = counter()
 
 // ------------------------------------------------
 
-var b = 1;
-function outer(){
-   	var b = 2
-    function inner(){
-        console.log('b in inner BEFORE var b = 3:', b) // undefined
-        b++; // NaN (++ on an undefined makes a NaN)
-        var b = 3; // NOTE: this being below b kills the b from the outer scope, makes b undefined
-        console.log('b in inner AFTER var b = 3:', b) // 3
-    }
-    inner();
-}
-// outer(); // 3
-
-// Output to the console will be “3”.
-//
-// There are three closures in the example, each with it’s own var b declaration. When a variable is invoked closures will be checked in order from local to global until an instance is found. Since the inner closure has a b variable of its own, that is what will be output.
-//
-// Furthermore, due to hoisting the code in inner will be interpreted as follows:
-//
-// function inner () {
-//     var b; // b is undefined
-//     b++; // b is NaN
-//     b = 3; // b is 3
-//     console.log(b); // output "3"
-// }
-
-// ------------------------------------------------
-
 
 var x = 21;
 var girl = function () {
@@ -123,6 +95,38 @@ var girl = function () {
 // (Why doesn’t it show the global value of 21? The reason is that when the function is executed,
 // it checks that there’s a local x variable present but doesn’t yet declare it, so it won’t look for global one.)
 // Kon: i.e. having the var x = 20; inside the function scope prevents using the global x = 21.
+
+
+// ------------------------------------------------
+
+var b = 1;
+function outer(){
+   	var b = 2
+    function inner(){
+        console.log('b in inner BEFORE var b = 3:', b) // undefined
+        b++; // NaN (++ on an undefined makes a NaN)
+        var b = 3; // NOTE: this being below b KILLS the b from the outer scope, makes the b above (in b++) undefined
+        console.log('b in inner AFTER var b = 3:', b) // 3
+    }
+    inner();
+}
+// outer(); // 3
+
+// Output to the console will be “3”.
+//
+// There are three closures in the example, each with it’s own var b declaration.
+// When a variable is invoked closures will be checked in order from local to global until an instance is found.
+// Since the inner closure has a b variable of its own, that is what will be output.
+//
+// Furthermore, due to hoisting the code in inner will be interpreted as follows:
+//
+// function inner () {
+//     var b; // b is undefined
+//     b++; // b is NaN
+//     b = 3; // b is 3
+//     console.log(b); // output "3"
+// }
+
 
 // ---------------------------------------------------
 (function () {
