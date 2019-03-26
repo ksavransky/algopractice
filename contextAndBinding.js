@@ -67,7 +67,7 @@ var myObject = {
 // inner func:  self.foo = bar
 // In the outer function, both this and self refer to myObject and therefore both can properly reference and access foo.
 //
-// In the inner function, though, this no longer refers to myObject. As a result, this.foo is undefined in the inner function,
+// In the inner function, though, 'this' no longer refers to myObject. As a result, this.foo is undefined in the inner function,
 // whereas the reference to the local variable self remains in scope and is accessible there.
 
 // ------------------------------------------------
