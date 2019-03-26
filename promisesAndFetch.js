@@ -34,9 +34,11 @@ let myFirstPromise = new Promise((resolve, reject) => {
   // In this example, we use setTimeout(...) to simulate async code.
   // In reality, you will probably be using something like XHR or an HTML5 API.
   setTimeout(function(){
-    resolve("Success!"); // Yay! Everything went well!
+    resolve("myFirstPromise Success!!!!!"); // Yay! Everything went well!
   }, 2000);
 });
+
+myFirstPromise.then(message => console.log(message))
 
 // myFirstPromise.then((successMessage) => {
 //   // successMessage is whatever we passed in the resolve(...) function above.

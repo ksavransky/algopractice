@@ -26,6 +26,7 @@ function permutations(array, startIndex, endIndex) {
 const input = ['A', 'B', 'C']
 console.log(permutations(input, 0, input.length - 1))
 
+// --------------------------
 
 function swap (inputArray, index1, index2) {
   var temp = inputArray[index1];

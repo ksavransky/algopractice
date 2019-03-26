@@ -138,7 +138,7 @@ var dog = {
 // Object.create() created an entirely new object maddie, with its prototype set to dog. The freshly created maddie object now has access to the eat method in dog.
 
 
-// Now, let’s check out the new operator:
+// Now, let’s check out the 'new' operator:
 //
 // var Dog = function(){
 //     this.eatFood = 'NomNomNom';
@@ -330,7 +330,8 @@ Vehicle.prototype.getType = function getType () {
 
 // https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Inheritance
 
-function Car (name) {
+// constructor for Car
+function Car(name) {
   // to set name to car i.e. like super(name, 'car');
   // calling Vehicle's constructor and passing in name param from Car constructor and 'car' as type param
   Vehicle.call(this, name, 'car'); // first param to call function is context 'this'
