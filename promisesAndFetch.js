@@ -6,19 +6,16 @@ let momsPromise = new Promise((resolve, reject) => {
   // if the call results in a 200 result, we go call the the resolve;
   // if the call results in a 400 or 500, we go call the reject
   if (momsSavings > priceOfPhone) {
-    resolve({
-      brand: "iphone",
-      model: "6s"
-    });
+    resolve("iPhone X");
   } else {
     reject("We do not have enough savings. Let us save some more money.");
   }
 });
 
 momsPromise.then((value) => {
-  console.log("Moms Promise: Hurray I got this phone as a gift ", JSON.stringify(value));
+  console.log("Moms Promise: Hurray I got this phone as a gift", value);
 }).catch((reason) => {
-  console.log("Moms Promise: Mom coudn't buy me the phone because ", reason);
+  console.log("Moms Promise: Mom coudn't buy me the phone because", reason);
 });
 
 // .finally doesn't work in node
@@ -33,7 +30,7 @@ let myFirstPromise = new Promise((resolve, reject) => {
   // We call resolve(...) when what we were doing asynchronously was successful, and reject(...) when it failed.
   // In this example, we use setTimeout(...) to simulate async code.
   // In reality, you will probably be using something like XHR or an HTML5 API.
-  setTimeout(function(){
+  setTimeout(() => {
     resolve("myFirstPromise Success!!!!!"); // Yay! Everything went well!
   }, 2000);
 });
@@ -491,32 +488,49 @@ asyncCall();
 
 // ---------
 
-
+// Note this is incomplete just to demonstrate how basic part works. See below for how it really works with .then
 class MyPromise{
   constructor(asyncFn) {
     this.asyncFn = asyncFn
-    this.successHandler = null
-    this.errHandler = null
-    this.resolve = () => typeof this.successHandler === 'function' ? this.successHandler() : null
-    this.reject = () => typeof this.successHandler === 'function' ? this.errHandler() : null
+    this.resolve = (arg) => console.log('in this.resolve callback - arg:', arg)
+    this.reject = (arg) => {}
     this.asyncFn(this.resolve, this.reject)
-  }
-
-  then(successHandler, errHandler) {
-    this.successHandler = successHandler;
-    this.errHandler = errHandler;
-    return new MyPromise(this.asyncFn)
   }
 }
 
 (new MyPromise(
   // note this below is an async function because of the setTimeout
   (resolve, reject) => {
-    setTimeout(()=> resolve(),1000)
+    setTimeout(()=> resolve('MyPromise says hi'),1000)
+  })
+)
+// -----------
+
+class MyPromiseWithThen{
+  constructor(asyncFn) {
+    this.asyncFn = asyncFn
+    this.successHandler = null
+    this.errHandler = null
+    this.resolve = (arg) => typeof this.successHandler === 'function' ? this.successHandler(arg) : null
+    this.reject = (arg) => typeof this.successHandler === 'function' ? this.errHandler(arg) : null
+    this.asyncFn(this.resolve, this.reject)
+  }
+
+  then(successHandler, errHandler) {
+    this.successHandler = successHandler;
+    this.errHandler = errHandler;
+    return new MyPromiseWithThen(this.asyncFn)
+  }
+}
+
+(new MyPromiseWithThen(
+  // note this below is an async function because of the setTimeout
+  (resolve, reject) => {
+    setTimeout(()=> resolve('Hiiiiii!!!!!'),1000)
   })
 ).then(
-  (msg) => console.log("MyPromise Success"),
-  (err) => console.log("MyPromise Errror")
+  (msg) => console.log("MyPromiseWithThen Success:", msg),
+  (err) => console.log("MyPromiseWithThen Errror")
 ).then(
-  (msg) => console.log("MyPromise Success2"),
-  (err) => console.log("MyPromise Errror2"));
+  (msg) => console.log("MyPromiseWithThen Success2"),
+  (err) => console.log("MyPromiseWithThen Errror2"));
