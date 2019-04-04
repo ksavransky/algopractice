@@ -315,7 +315,7 @@ console.log(sq1.area()) // 4
 
 // Inheritance
 
-function Vehicle (name, type) {
+function Vehicle(name, type) {
   this.name = name;
   this.type = type;
 };

@@ -50,7 +50,7 @@ Tech project that went well #2
 - Me Foundation - css grid via flexbox and flexbox; nesting, naming, global css vars, mixins, tighter html thanks to css grid and flexbox
 - noticeably reduced ui errors by a lot - much less bugs -- easier for devs to write css and have it work and be standardized across app
 
-Tech failure story #1
+Tech failure story #1 - as a lead - delegation
 delegation/ explaining what i'm working on to rest of team / clear function names / time to refactored
 - worked on Google Map api - got it to work but didn't have time to create clear docs
 and didn't have time to explain to Matt -- function names weren't clear
@@ -67,3 +67,16 @@ Tech failure story #2 maybe:
 Creating Leads in Salesforce through Segment ??? Spent lots of time on trial and error.
 Poor doc on Salesforce. Wouldn't respond.  Wasted a lot of time. Only got it partially working.
 - learning need to time box things
+---
+Weakness
+Tech weakness #1 - tests
+Need to spend more time practicing Jest matchers, too reliant on cheatsheet
+Need to spend more time on more complicated mock functions
+
+Tech weakness #2 - BE
+When I look at my skill set as a whole, is not enough practice BE coding.
+It’s just not something that I’ve been asked to do much at work so I understand the fundamentals from school and side projects
+but I’m pretty rusty in terms of working hands-on with it. I was planning on brushing up
+in the next few months on my own time to broaden my skill set.
+I think it’d help me be more well-rounded and would filter down into other areas that I use more often in my work.
+e.g. Understand better how endpoints are optimized
