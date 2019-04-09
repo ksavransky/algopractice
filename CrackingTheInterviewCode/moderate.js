@@ -1,7 +1,11 @@
+// p475
+// Smallest Difference: Given two arrays of integers,
+// compute the pair of values (one value in each array)
+//  with the smallest (non-negative) difference. Return the difference.
+
 // Intersection:
 // Given two straight line segments
 // (represented as a start point and an end point), compute the point of intersection, if any.
-
 
 function getCellsInLine(pointOne, pointTwo, cellsInLine = []) {
   cellsInLine.push(pointOne)
@@ -19,7 +23,7 @@ function getCellsInLine(pointOne, pointTwo, cellsInLine = []) {
   return getCellsInLine([pointOne[0] - differenceBetweenXs, pointOne[1] - differenceBetweenYs], pointTwo, cellsInLine)
 }
 
-console.log(getCellsInLine([0, 0], [3, 3]))
+// console.log(getCellsInLine([0, 0], [3, 3]))
 
 // function intersection(lineOne, lineTwo) {
 //
@@ -35,3 +39,53 @@ console.log(getCellsInLine([0, 0], [3, 3]))
 // const line2 = [[0, 1], [0, 4]]
 // console.log(intersection(line1, line2))
 // output: [1, 1]
+
+
+// Living People: Given a list of people with their birth and death years,
+// implement a method to compute the year with the most number of people alive.
+// You may assume that all people were born between 1900 and 2000 (inclusive).
+// If a person was alive during any portion of that year, they should be included in that year's count.
+// For example, Person (birth= 1908, death= 1909) is included in the counts for both 1908 and 1909.
+const peopleList = [[1900, 1910], [1909, 1999], [1950, 1976], [1951, 1952]]
+
+function livingPeopleBrute(peopleList){
+  const yearsCount = {}
+  let maxYear = [1900, 0]
+  peopleList.forEach(entry => {
+    const [start, end] = entry
+    let year = start
+    while(year < end + 1) {
+      if (yearsCount[year]) {
+        yearsCount[year] = yearsCount[year] + 1
+      } else {
+        yearsCount[year] = 1
+      }
+      if (yearsCount[year] > maxYear[1]) {
+        maxYear = [year, yearsCount[year]]
+      }
+      year += 1
+    }
+  })
+  return maxYear[0]
+}
+
+console.log(livingPeopleBrute(peopleList))
+
+function livingPeopleBetter(peopleList){
+  let births = []
+  let deaths = []
+  let maxYear = [1900, 0]
+  peopleList.forEach(entry => {
+    const [start, end] = entry
+    births.push(start)
+    deaths.push(end)
+  })
+  births = births.sort()
+  deaths = deaths.sort()
+  let birthIndex = 0
+  let deathIndex = 0
+  console.log('births', births)
+  console.log('deaths', deaths)
+}
+
+console.log(livingPeopleBetter(peopleList))
