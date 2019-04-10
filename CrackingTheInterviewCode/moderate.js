@@ -69,7 +69,7 @@ function livingPeopleBrute(peopleList){
   return maxYear[0]
 }
 
-console.log(livingPeopleBrute(peopleList))
+// console.log(livingPeopleBrute(peopleList))
 
 function livingPeopleBetter(peopleList){
   let births = []
@@ -107,4 +107,28 @@ function livingPeopleBetter(peopleList){
   return maxNumberLiving.year
 }
 
-console.log(livingPeopleBetter(peopleList))
+// console.log(livingPeopleBetter(peopleList))
+
+function masterMind(solution, guess) {
+  const result = {
+    hit: 0,
+    pseudoHit: 0
+  }
+
+  const guessArray = guess.split('')
+  const solutionArray = solution.split('')
+  const types = ['R', 'G', 'B', 'Y']
+  types.forEach(type => {
+    // number in guess
+    // number in solution 
+  })
+
+
+  return result
+}
+
+const solution1 = 'RGBY'
+const guess1 = 'GGRR'
+// output: {hit: 1, psuedohit: 1}
+
+console.log(masterMind(solution1, guess1))
