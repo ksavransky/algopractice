@@ -74,18 +74,37 @@ console.log(livingPeopleBrute(peopleList))
 function livingPeopleBetter(peopleList){
   let births = []
   let deaths = []
-  let maxYear = [1900, 0]
   peopleList.forEach(entry => {
     const [start, end] = entry
     births.push(start)
     deaths.push(end)
   })
+  if (births.length === 0) {
+    return null
+  }
   births = births.sort()
   deaths = deaths.sort()
   let birthIndex = 0
   let deathIndex = 0
-  console.log('births', births)
-  console.log('deaths', deaths)
+  let maxNumberLiving = {
+    year: 1900,
+    amount: 0
+  }
+  let numberLiving = 0
+  while(births[birthIndex] && deaths[deathIndex]) {
+    if (births[birthIndex] < deaths[deathIndex]) {
+      numberLiving += 1
+      if (numberLiving > maxNumberLiving.amount) {
+        maxNumberLiving.year = births[birthIndex]
+        maxNumberLiving.amount = numberLiving
+      }
+      birthIndex += 1
+    } else {
+      numberLiving -= 1
+      deathIndex += 1
+    }
+  }
+  return maxNumberLiving.year
 }
 
 console.log(livingPeopleBetter(peopleList))
