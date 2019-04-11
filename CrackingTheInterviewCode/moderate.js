@@ -117,12 +117,32 @@ function masterMind(solution, guess) {
 
   const guessArray = guess.split('')
   const solutionArray = solution.split('')
-  const types = ['R', 'G', 'B', 'Y']
-  types.forEach(type => {
-    // number in guess
-    // number in solution 
+  const solutionTypes = {
+    R: 0,
+    G: 0,
+    B: 0,
+    Y: 0,
+  }
+  const guessTypes = {
+    R: 0,
+    G: 0,
+    B: 0,
+    Y: 0,
+  }
+  solutionArray.forEach(solution => solutionTypes[solution] = solutionTypes[solution] + 1)
+  guessArray.forEach(guess => guessTypes[guess] = guessTypes[guess] + 1)
+  Object.keys(guessTypes).forEach(key => {
+    const amountOfKeyInGuess = guessTypes[key]
+    const amountOfKeyInSolution = solutionTypes[key]
+    result.pseudoHit = result.pseudoHit + Math.min(amountOfKeyInGuess, amountOfKeyInSolution)
   })
 
+  guessArray.forEach((guess, index) => {
+    if (guess === solutionArray[index]) {
+      result.hit = result.hit + 1
+      result.pseudoHit = result.pseudoHit - 1
+    }
+  })
 
   return result
 }
@@ -131,4 +151,36 @@ const solution1 = 'RGBY'
 const guess1 = 'GGRR'
 // output: {hit: 1, psuedohit: 1}
 
-console.log(masterMind(solution1, guess1))
+// console.log(masterMind(solution1, guess1))
+
+
+
+// Sub Sort: Given an array of integers, write a method to find indices m and n such that if you sorted
+// elements m through n , the entire array would be sorted. Minimize n such sequence).
+// EXAMPLE
+// Input:1, 2, 4, 7, 10, 11, 7, 12, 6, 7, 16, 18, 19 Output: (3, 9)
+
+const subsortList = [1, 2, 4, 7, 10, 11, 7, 12, 6, 7, 16, 18, 19]
+
+function subsort(list){
+  const valueToIndexMap = {}
+  const outOfOrder = {}
+  subsortList.forEach((value, index) => {
+    if (valueToIndexMap[value]) {
+      valueToIndexMap[value].push(index)
+    } else {
+      valueToIndexMap[value] = [index]
+    }
+    if (value < subsortList[index - 1]){
+      if (outOfOrder[value]) {
+        outOfOrder[value].push(index)
+      } else {
+        outOfOrder[value] = [index]
+      }
+    }
+  })
+  console.log('valueToIndexMap', valueToIndexMap)
+  console.log('outOfOrder', outOfOrder)
+}
+
+console.log(subsort(subsortList))
