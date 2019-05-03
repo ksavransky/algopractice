@@ -43,6 +43,7 @@ Tech project that went well #1
 - looked outdated and ux felt bad -- many pages with Qs
 - I made React Typeform lib
 - POC, 2-3 weeks, Google Analytics tracking showed more users completing the flows
+- Also refactor to do top bottom approach to forms like Formik and with HOC to switch between pages
 
 Tech project that went well #2
 - Brightplan
@@ -62,11 +63,24 @@ and didn't have time to explain to Matt -- function names weren't clear
 - important to take time to do things right - manage own timelines with product - set expectations correctly
 - take time to refactor and name component apis clearly
 
-
 Tech failure story #2 maybe:
+Converting fields from JS objects (non react style inheritance in old system) to React Components.
+Lots of business logic tied up in fields (e.g. showing, based on what company, editable, etc)
+Missed business logic during conversion. Led to a lot of bugs.
+Lots of work so I did it without writing system tests. Came back to bite me in the butt.
+Should have worked closer with product to understand all flows (no docs available - next time should create)
+
+Tech failure story #3 maybe:
+Forgot throttle control on input field on form that was hammering api for Lincoln Coverage search
+and led to performance issues. Should have done more testing and made sure we had better system tests.
+
+
+Tech failure story #4 maybe:
 Creating Leads in Salesforce through Segment ??? Spent lots of time on trial and error.
 Poor doc on Salesforce. Wouldn't respond.  Wasted a lot of time. Only got it partially working.
 - learning need to time box things
+
+
 ---
 Weakness
 Tech weakness #1 - tests
