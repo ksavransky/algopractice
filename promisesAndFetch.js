@@ -516,7 +516,7 @@ class MyPromiseWithThen{
     this.asyncFn(this.resolve, this.reject)
   }
 
-  then(successHandler, errHandler) {
+  then(successHandler, errHandler) {   // NOTE: errHandler is an optional second arg to then function, see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/then
     this.successHandler = successHandler;
     this.errHandler = errHandler;
     return new MyPromiseWithThen(this.asyncFn)
