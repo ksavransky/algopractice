@@ -259,11 +259,11 @@ function callAllPromises(){
 
   const handleAllPromises = Promise.all(promisesArray);
 
-  handleAllPromises.then(function(values) {
+  handleAllPromises.then((values) => {
     console.log("Promise.All");
     console.log("All the promises are resolved", values);
   });
-  handleAllPromises.catch(function(reason) {
+  handleAllPromises.catch((reason) => {
     console.log("One of the promises failed with the following reason", reason);
   });
 }
@@ -492,7 +492,7 @@ asyncCall();
 class MyPromise{
   constructor(asyncFn) {
     this.asyncFn = asyncFn
-    this.resolve = (arg) => console.log('in this.resolve callback - arg:', arg)
+    this.resolve = (arg) => console.log('in MyPromise, this.resolve callback - arg:', arg)
     this.reject = (arg) => {}
     this.asyncFn(this.resolve, this.reject)
   }

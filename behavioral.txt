@@ -16,6 +16,10 @@ Interpersonal Conflict Story
 - This was first time I raised issue with him. We had differences of opinion since,
 - but we have been able to be professional about them and have made good progress on a plan and refactoring the codebase.
 - I understand it is his baby so I had to be sensitive the fact he developed it, but wanting what’s best for company.
+- Learned to try to see things from other devs point of view better, not just technically but empathetically at the real life context for person
+- Now we are good friends
+
+-----------------
 
 My HR mess up
 
@@ -28,32 +32,439 @@ My HR mess up
 - My complaining was bringing down moral but I didn’t notice.
 - My manager pulled me aside to discuss the issue.
 - I felt embarrassed. I didn't realize I was being so vocal. But I realized he was right. I stopped doing that immediately.
-- I also talked to P about percent coverage and negotiated it down a bit. However, the tests did help to uncover a couple of bugs, so I started to appreciate the importance of unit testing more.
-- Funny thing is a couple weeks after that incident, a dev on my team was being vocal about a previously poorly written piece of code he was working in.
+- I also talked to CTO about percent coverage and negotiated it down a bit. However, the tests did help to uncover a couple of bugs, so I started to appreciate the importance of unit testing more.
+- Learned that it is better to explain problem and see if can compromise and explain issues then to just stew and complain.
+- Something I already knew... so wasn't my best professional moment.
+- Funny thing is a couple weeks after that incident, a dev on my team was being vocal about a previously poorly written piece of code (store system) he was working in.
 - The dev who wrote it was no longer at the company, but the complaining was kind of a downer,
 - So I talked to M and said I understood his frustration but we should just ask for tech help instead of being vocal about our frustrations. He seemed to understand.
 - I learned that sometimes you need to step back when you are frustrated and think about the big picture.
-- People may have experience from prior experiences that you don’t and you should try to learn from that even if it is immediately impacting your workload!
+- Also, learned to learn from people's prior experiences should try to learn from that even disagree or its putting pressure on you!
 
-Tech project that went well #1
+------------
+Successes
+
+Tech project that went well (collaboration with Prod/Marketing - Prod/Marketing impact): #1
 - Brightplan
 - me creating React Typeform library
 - long forms investment
 - users dropping off
 - looked outdated and ux felt bad -- many pages with Qs
 - I made React Typeform lib
-- POC, 2-3 weeks, Google Analytics tracking showed more users completing the flows
-- Also refactor to do top bottom approach to forms like Formik and with HOC to switch between pages
+- POC, 2-3 weeks, Google Analytics tracking showed more users completing the flows. 30% completion uptick in onboarding
+- DO NOT BRING UP tech refactor here!!! save for negative. See below. This is impressive on its own.
 
-Tech project that went well #2
+Tech project #2 (collaboration with Prod - Prod impact):
+- Swoop
+- Truck drivers no accepting jobs even though there HQ was close by.
+- Had brainstorming session with Prod.
+- I suggested maybe improving how they chose their location. At time was just address with radius.
+- In real like, bridges, freeways, hills etc... so radius isn't perfect
+- Suggested eng could create a pin system to make any shape area on Google Map we already had in place for choosing location.
+- Already had pins implemented for route drop, but not multiple pins. Said I could tackle it.
+- Worked on POC for about a week on FE and then BE needed to work on its part for about a week (save points and make sure job request was in area)
+- Ended up successfully launching feature and saw about 10% less job rejections by drivers
+
+Tech project that went well #3
+Creating stnd component library at Swoop and supervising juniors devs at doing so.
+Easy to plugin to forms. Buttons, pop up, select, more complex did self like multi select React Datepicker
+
+Tech project that went well #4
+Implementing Formik and Relay for React Native app
+
+Tech project that went well #5
 - Brightplan
 - Gut CSS BootStrap3 - floats - extra divs etc... - no className organization, no mixins for font size color etc.
 - Me Foundation - css grid via flexbox and flexbox; nesting, naming, global css vars, mixins, tighter html thanks to css grid and flexbox
 - noticeably reduced ui errors by a lot - much less bugs -- easier for devs to write css and have it work and be standardized across app
 
-Tech failure story #1 - as a lead - delegation
+---------
+Failures
+
+Tech failure story #1 (kind of small... not sure it makes for a good story .. try first?):
+Forgot throttle control on input field on form that was hammering api for Lincoln Coverage search
+and led to performance issues. Should have done more testing and made sure we had better system tests.
+
+
+Tech failure story #2:
+Pretend I wrote Huy's form system.
+Pretend came in early in project before a lot of forms built (just using bootstrap at time) and needed architecture.
+Javascript class instance to hold information about form.
+Class instance contained: field names, values, dirty, get all values (for saving), validation for form (can trigger validation check for each field).
+See below for code.
+Worked for a while with simple forms and components (e.g. text input select),
+but started having a lot of bugs for complex forms and components
+e.g. (calendar component was really bloated because of a lot of functionality and the way it connected to the form)
+e.g. api was difficult for other devs on team to use, and even me when I went back to modify complex components
+e.g. complex forms because 2 places for state: api issues because devs would make change to update locally only in certain conditions and then would result in bugs because form wasn't updated
+e.g. complex forms that had interfield dependencies were problematic because 2 places for state:
+local at component level and in form helper.
+Devs would write logic in field A to update based on dependency in field B and vice versa, would cause loops or breaking business logic
+
+So this lasted for a couple of months... then decided to rewrite
+Redux forms was leading lib then. Formik was unknown at that time.
+Team considered adopting redux forms.
+I wasn't strongly against because good to use standard libs, especially for docs and known api
+But thought we could do better by not using app wide state and overly complex redux cycle for form manageement
+Begged Manager to salvage idea of what I made but make it more Reactful and solve bugs
+Very nice of my manager to let me take another stab at it. Gave my POC
+Team liked my pitch. So did a POC refactor of our more complex form (investment flow) using new approach.
+New approach very similar to formik, where 1 source of truth at form level and field components don't have local state setting
+Much better. Solved a lot of the bugs we had before by having one source of truth for values, validity, dirtiness.
+Interdependencies now lived in one place at form level so visible and got rid of those bugs.
+
+
+Learnings: besides coming to better form architecture and
+learning to be more Reactful and trying not to mix to much JS classes with react
+also learned that it can be better to do POC on limited but more complicated features than simple fully blown features
+because unknown complexity can break or lead to a bad architecture
+
+Huy code for his form system:
+utils/formHelper.js
+
+class FormHelper {
+
+constructor () {
+  this.inputHandles = {}  <<<< names
+  this.inputValues = {}  <<< stores name/handle = value
+  this.inputDirtiness = {} <<< stores name/handle = true/false for dirty
+  this.inputValidity = {} <<< stores name/handle = true/false for valid
+}
+
+valueChanged (thisInput, inputName, inputValue, inputDirty, inputValid) {
+  return new Promise((resolve, reject) => {
+    this.inputHandles[inputName] = thisInput
+    this.inputValues[inputName] = inputValue
+    this.inputDirtiness[inputName] = inputDirty
+    this.inputValidity[inputName] = inputValid
+    return resolve()
+  })
+}
+
+isValid () {
+  const editableValues = this.getEditableFields()
+  const namesOfEditableFields = editableValues.map(currentInput => {
+    return currentInput.props.name
+  })
+  const inputValidityForEditables = _.filter(this.inputValidity, (value, key) => _.includes(namesOfEditableFields, key))
+  return _.every(_.values(inputValidityForEditables), Boolean)
+}
+
+isDirty () {
+  return _.some(_.values(this.inputDirtiness), Boolean)
+}
+
+validate () {
+  const editableValues = this.getEditableFields()
+  _.forEach(_.values(editableValues), function (aHandle) {
+    aHandle.validate()
+  })
+}
+
+isInputDirty (inputName) {
+  return this.inputDirtiness[inputName]
+}
+
+isInputValid (inputName) {
+  return this.inputValidity[inputName]
+}
+
+getValue (inputId) {
+  return this.inputValues[inputId]
+}
+
+getDirtyInputs () {
+  return this.getChangedInputs()
+}
+
+getChangedInputs () {
+  var that = this
+  return _.pickBy(this.inputValues, function (inputValue, inputName) {
+    return that.inputDirtiness[inputName]
+  })
+}
+
+setValue (value, inputName, preventPropagation) {
+  const isEqual = isBPTime(value) && isBPTime(this.inputValues[inputName])
+    ? this.inputValues[inputName].isSame(value)
+    : _.isEqual(this.inputValues[inputName], value)
+  if (this.inputHandles[inputName] && !isEqual) {
+    this.inputHandles[inputName].setValue(value, preventPropagation)
+    if (preventPropagation) {
+      // i need to set the input value for my form helper because preventPropagation === true means it will not make back to the formhelper onvaluechanged
+      // so must manually set it here
+      this.inputValues[inputName] = value
+    }
+  }
+}
+
+getValidRange (inputName) {
+  if (this.inputHandles[inputName]) {
+    return this.inputHandles[inputName].getValidRange()
+  }
+}
+
+getErrorMessage (inputName) {
+  return this.inputHandles[inputName].getErrorMessage()
+}
+
+addManualAccount/addManualAccount.jsx
+
+class AddManualAccount extends Component {
+  constructor (props) {
+    super(props)
+    this.handleSave = this.handleSave.bind(this)
+    this.renderForm = this.renderForm.bind(this)
+    this.isValid = this.isValid.bind(this)
+    this.isDirty = this.isDirty.bind(this)
+    this.formHelper = new FormHelper()   <<<<<<<
+    this.setInitialState()
+  }
+
+  setInitialState () {
+    this.state = {
+      allowSave: true,
+      areInputsValid: this.formHelper.isValid(),
+      areInputsDirty: this.formHelper.isDirty(),
+      clickedSave: false
+    }
+  }
+
+  handleSave () {
+  this.formHelper.validate()
+  if (this.formHelper.isValid() && this.formHelper.isDirty() && this.state.allowSave) {
+    var requestObj = _.cloneDeep(this.formHelper.inputValues)
+     ....
+
+
+   onValueChanged (thisInput, promptName, value, dirty, valid) {
+     this.formHelper.valueChanged(thisInput, promptName, value, dirty, valid)
+     this.isValid()
+     this.isDirty()
+   }
+
+   isValid () {
+     const areInputsValid = this.formHelper.isValid()
+     this.setState({ areInputsValid })
+   }
+
+   isDirty () {
+     const areInputsDirty = this.formHelper.isDirty()
+     this.setState({ areInputsDirty })
+   }
+}
+
+...
+<CompactInputPrompt
+  promptMessage={this.props.intl.formatMessage({id: 'add.manual.account.modal.city'})}
+  errorMessage={this.props.intl.formatMessage({id: 'add.manual.account.modal.field.error'}, {field: 'city'})}
+  hintMessage=''
+  onValueChanged={this.onValueChanged.bind(this)} <<<<<<<
+>
+  <TextInput
+    name='city'  <<<<<<<
+    initialValue={_.get(this.props, 'account.city', '')}  <<<<<
+    required
+    maxLength={50}
+    maxChars={50} />
+</CompactInputPrompt>
+
+
+components/form/baseTextInput.jsx
+
+
+class BaseInput extends Component {
+  constructor (props) {
+    super(props)
+    this._valueChange = this._valueChange.bind(this)
+    this._onFocus = this._onFocus.bind(this)
+    this._onBlur = this._onBlur.bind(this)
+    this.validate = this.validate.bind(this)
+    this.reset = this.reset.bind(this)
+
+    this.state = {
+      originalValue: this.props.initialValue ? this.props.initialValue : '',
+      currentValue: this.props.initialValue ? this.props.initialValue : '',
+      maxChars: this.props.maxChars || MAX_CHARS,
+      initialRender: true,
+      isFocused: false,
+      isValid: true,
+      invalidKey: false
+    }
+    this.maxCharsReached = false
+  }
+
+  componentDidMount () {
+    // do this so that the form or container has an initial notification of who i am
+
+    if (this.props.onValueChanged) {
+      this.props.onValueChanged(this, this.props.name, this.getValue(), this.isDirty(), true, true)
+    }
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (nextProps && (nextProps.initialValue !== this.props.initialValue || nextProps.maxChars !== this.props.maxChars)) {
+      this.setState({
+        originalValue: nextProps.initialValue ? nextProps.initialValue : '',
+        currentValue: nextProps.initialValue ? nextProps.initialValue : '',
+        maxChars: nextProps.maxChars || MAX_CHARS
+      }, () => {
+        if (this.props.onValueChanged) {
+          this.props.onValueChanged(this, this.props.name, this.getValue(), this.isDirty(), true, true)
+        }
+      })
+    }
+  }
+
+
+  getValue () {
+      let theCurrentValue = this.state.currentValue
+      theCurrentValue = theCurrentValue || ''
+
+      if (theCurrentValue.length >= this.state.maxChars) {
+        this.maxCharsReached = true
+      } else {
+        this.maxCharsReached = false
+      }
+
+      return theCurrentValue
+    }
+
+    isDirty () {
+      return this.state.currentValue !== this.state.originalValue
+    }
+
+    _checkValidity () {
+      const { maxChars, currentValue } = this.state
+      const trimmedCurrentValue = (typeof currentValue === 'string') ? currentValue.trim() : currentValue
+      const length = trimmedCurrentValue ? trimmedCurrentValue.length : 0
+      const { minChars } = this.props
+      let isValid
+      if (this.props.required) {
+        if ((!minChars || length >= minChars) && (length <= maxChars)) {
+          isValid = currentValue !== ''
+        } else {
+          isValid = false
+        }
+      } else {
+        isValid = (!minChars || length >= minChars) && (length <= maxChars)
+      }
+      if (currentValue !== trimmedCurrentValue) {
+        this.setState({
+          currentValue: trimmedCurrentValue
+        }, () => {
+          return isValid
+        })
+      }
+      return isValid
+    }
+
+    isValid () {
+      let isValid
+      if (this.props.externalValidateFunction) {
+        isValid = this.props.externalValidateFunction(this.getValue())
+      } else {
+        isValid = this._checkValidity()
+      }
+
+      this.setState({
+        isValid: isValid
+      })
+
+      return isValid
+    }
+
+    validate () {
+      this.setState({
+        initialRender: false
+      })
+
+      if (this.props.onValueChanged) {
+        this.props.onValueChanged(this, this.props.name, this.getValue(), this.isDirty(), this.isValid())
+      }
+    }
+
+    reset () {
+      this.setState({
+        initialRender: true,
+        currentValue: this.state.originalValue
+      }, () => {
+        if (this.props.onValueChanged) {
+          this.props.onValueChanged(this, this.props.name, this.getValue(), this.isDirty(), true)
+        }
+      })
+    }
+
+    setValue (value) {
+      this.setState({
+        currentValue: value,
+        initialRender: false
+      }, () => {
+        if (this.props.onValueChanged) {
+          this.props.onValueChanged(this, this.props.name, this.getValue(), this.isDirty(), this.isValid())
+        }
+      })
+    }
+
+    _onFocus (event) {
+      const length = get(event.target, 'value.length')
+      event.target.setSelectionRange(length, length)
+
+      this.setState({
+        initialRender: false,
+        isFocused: true
+      }, () => {
+        if (this.props.onFocusChanged) {
+          this.props.onFocusChanged(this.props.name, true)
+        }
+      })
+    }
+
+    _valueChange (event) {
+      if (!this.state.invalidKey) {
+        this.setState({
+          initialRender: false,
+          currentValue: event.target.value
+        }, () => {
+          if (this.props.onValueChanged) {
+            this.props.onValueChanged(this, this.props.name, this.getValue(), this.isDirty(), true)
+          }
+        })
+      }
+    }
+
+    return (
+        <div className='base-input-container'>
+          <input
+            id={this.props.name}
+            className={theClassName}
+            tabIndex={0}
+            value={this.state.currentValue}
+            onChange={this._valueChange}
+            onKeyDown={::this._onKeyDown}
+            onFocus={this._onFocus}
+            onBlur={this._onBlur}
+            {...thePropsToPass}
+          />
+        </div>
+      )
+
+
+Tech failure story #3 (more process failure than tech failure but ok...) maybe:
+Converting fields from JS objects (non react style inheritance in old system) to React Components.
+Lots of business logic tied up in fields (e.g. showing, based on what company, editable, etc)
+Missed business logic during conversion. Led to a lot of bugs.
+Lots of work so I did it without writing system tests. Came back to bite me in the butt.
+Should have worked closer with product to understand all flows (no docs available - next time should create)
+
+Tech failure story #4 (too small...) maybe:
+Creating Leads in Salesforce through Segment ??? Spent lots of time on trial and error.
+Poor doc on Salesforce. Wouldn't respond.  Wasted a lot of time. Only got it partially working.
+- learning need to time box things
+
+Tech failure story #5 - as a lead - delegation (more process failure than tech failure but ok...) maybe:
 delegation/ explaining what i'm working on to rest of team / clear function names / time to refactored
-- worked on Google Map api - got it to work but didn't have time to create clear docs
+- worked on Google Map api improvements (render truck routes and custom zones for driver coverage) - got it to work but didn't have time to create clear docs
 and didn't have time to explain to Matt -- function names weren't clear
 - then pulled into another big project (Lincoln launch with coverage)
 - then needed team needed to make more upgrades to Map
@@ -63,31 +474,19 @@ and didn't have time to explain to Matt -- function names weren't clear
 - important to take time to do things right - manage own timelines with product - set expectations correctly
 - take time to refactor and name component apis clearly
 
-Tech failure story #2 maybe:
-Converting fields from JS objects (non react style inheritance in old system) to React Components.
-Lots of business logic tied up in fields (e.g. showing, based on what company, editable, etc)
-Missed business logic during conversion. Led to a lot of bugs.
-Lots of work so I did it without writing system tests. Came back to bite me in the butt.
-Should have worked closer with product to understand all flows (no docs available - next time should create)
 
-Tech failure story #3 maybe:
-Forgot throttle control on input field on form that was hammering api for Lincoln Coverage search
-and led to performance issues. Should have done more testing and made sure we had better system tests.
+---------
+Weaknesses
 
+Tech weakness #1 - DevOps
+Recent example about circle ci integration (emulator on remote env)
+Mobile builds (conflict in dependencies in pushwoosh lib)
 
-Tech failure story #4 maybe:
-Creating Leads in Salesforce through Segment ??? Spent lots of time on trial and error.
-Poor doc on Salesforce. Wouldn't respond.  Wasted a lot of time. Only got it partially working.
-- learning need to time box things
-
-
----
-Weakness
-Tech weakness #1 - tests
+Tech weakness #2 - tests
 Need to spend more time practicing Jest matchers, too reliant on cheatsheet
 Need to spend more time on more complicated mock functions
 
-Tech weakness #2 - BE
+Tech weakness #3 - BE
 When I look at my skill set as a whole, is not enough practice BE coding.
 It’s just not something that I’ve been asked to do much at work so I understand the fundamentals from school and side projects
 but I’m pretty rusty in terms of working hands-on with it. I was planning on brushing up
