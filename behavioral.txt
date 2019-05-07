@@ -1,14 +1,14 @@
 Interpersonal Conflict Story
 
 - Conflict with Quinn when I started at Swoop.
-- First major project was to refactor somewhat complex multi select component to add complexity based on product spec
+- First major project was to refactor and add functionality to a somewhat complex multi select component to add complexity based on product spec
 - Looked at code. Difficult to read. Had things like a null meaning 'all' boxes checked.
 - Talked to Q about it. He said I could try refactoring. So I did it.
 - Rewrote code and raised PR.
 - Q wrote ‘Yuck, what is this’ on PR about my refactored
 - I got upset about the comment because I thought it wasn’t professional and I really thought my code was good.
 - I wanted to be transparent about the issue with Q. So I asked to have a private meeting with him and asked that we try to be respectful and professional in our PR reviews.
-- That we can discuss tech disagreements but we should not use derogatory terms about each others work. He apologized and I could tell he was embarrassed. It never happened again.
+- That we can discuss tech disagreements but we should only use constructive criticism about each others work. He apologized and I could tell he was embarrassed. It never happened again.
 - I also raised the issue to our manager after in private just to be transparent. He said I handled the situation well and to let him know if there were other issues.
 - As for the technical disagreement, we discussed the code some more and eventually Q agreed that my explicit code was more readable.
 - But I learned that what Q was trying to do was optimize more for performance, which made his code a bit less readable for the component.
@@ -21,7 +21,7 @@ Interpersonal Conflict Story
 
 -----------------
 
-My HR mess up
+My HR-ish mess up
 
 - Swoop
 - I was working on a complicated new functionality on a hard deadline related to checking for insurance coverage for Lincoln
@@ -75,7 +75,7 @@ Implementing Formik and Relay for React Native app
 Tech project that went well #5
 - Brightplan
 - Gut CSS BootStrap3 - floats - extra divs etc... - no className organization, no mixins for font size color etc.
-- Me Foundation - css grid via flexbox and flexbox; nesting, naming, global css vars, mixins, tighter html thanks to css grid and flexbox
+- Me Foundation - css grid via flexbox; nesting, naming, global css vars, mixins, tighter html thanks to css grid and flexbox
 - noticeably reduced ui errors by a lot - much less bugs -- easier for devs to write css and have it work and be standardized across app
 
 ---------
@@ -478,7 +478,7 @@ and didn't have time to explain to Matt -- function names weren't clear
 ---------
 Weaknesses
 
-Tech weakness #1 - DevOps
+Tech weakness #1 - Builds + DevOps
 Recent example about circle ci integration (emulator on remote env)
 Mobile builds (conflict in dependencies in pushwoosh lib)
 
@@ -493,3 +493,66 @@ but I’m pretty rusty in terms of working hands-on with it. I was planning on b
 in the next few months on my own time to broaden my skill set.
 I think it’d help me be more well-rounded and would filter down into other areas that I use more often in my work.
 e.g. Understand better how endpoints are optimized
+
+----
+
+
+Slack Interview extras:
+
+Why do you want to work at Slack?
+*     Cliche but great product - been using for years and really like it
+* Better than email - easy to share google docs, video, photos, GitHub and Jira integration
+* Want to work at larger company that is agile but has great reach and many users
+    * Exciting to scale a successful product and take company to next level
+    * Looking for a place I can stay for many years and grow as an eng and potentially get into management, which may be easier at a company that is growing fast and has size
+* Slack has potential to expand into other areas and become even more dominant platform (e.g. take over chat from other cos) or integrate into non-work contexts… e.g. video games
+How do you see yourself growing in 5 years?
+*     Continuing to become a strong FE dev
+* Hoping to do more full stack work to round out skills (if not at work then on side projects)
+* Continue to try to be a leader and perhaps get into eng management or being a tech lead. Really enjoy mentoring and making sure everyone on team is happy — making good work environment. Looking at big picture for prod and team. Leading refactor and architecture efforts.
+What don’t you like about Slack?
+*     No easy way to customize group pings (e.g. here) and group channels
+* Also it would be cool if could sort channels by unread at top
+* Or auto sort to most used channels and hide rest under a ‘more..'
+What is the biggest non-technical lesson you learned from previous work experience?
+* Be patient with other people and communicate your frustration/problems instead of internalize
+    * Quinn story at start with multi select .. trust gained over time
+        * Learn what motivates other people
+        * Lots of pressure - sharing and carving out areas of ownership
+        * Turning situation around to be helpful and let them do more
+    * CTO testing v Lincon example
+What is your favorite slack feature?
+*     Integration with Github (see pull requests reminders, who is merging what, releases) … really helpful as developer. Use a lot as lead. Google Drive integration and sharing google docs — love that — very useful
+Tell me about a challenge you have faced?
+*     Changing careers if general
+*     Huy form architecture if want tech
+
+
+----
+Qs for engineers
+Your favorite thing about working at Slack
+Most challenging thing about working at Slack
+Most excited about Slack
+Mobility between FE, BE mobile and teams
+Mobility to management
+Mentorship Teaching culture, budget for learning?
+Culture - socializing beyond work time? Offsite? Happy hours? Game nights?
+Feedback cycle?
+PR process?
+Enviroments?
+Getting set up? Docker?
+Help from other eng?
+What’s it like working with Product?
+Tech stack? Choice by group?
+---
+Qs For Tia Caldwell (hiring manager):
+How does team run experiments - mentioned going to be experimenting
+Feedback cycle?
+Team leads?
+PR process?
+Ability to eventually choose projects?
+How many Product managers?
+Agile? What scrum ceremonies? Standup, Retro, Sprint planning?
+Meetings eng per week?
+Vision for team going forward?
+What do you think makes a good dev?
